@@ -10,8 +10,8 @@ gem 'pg'
 
 # testing: load RSpec
 group :development, :test do
-  gem 'rspec-rails'
   gem 'capybara'
+  gem 'rspec-rails'
 end
 
 # Gems used only for assets and not required
