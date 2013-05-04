@@ -5,8 +5,13 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# use postgresql
 gem 'pg'
 
+# testing: load RSpec
+group :development, :test do
+  gem 'rspec-rails'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
