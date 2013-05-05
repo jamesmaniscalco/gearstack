@@ -18,13 +18,12 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'handlebars_assets', '~> 0.12.0'
   gem 'uglifier', '>= 1.0.3'
 end
 
+# jQuery and templating stuff
 gem 'jquery-rails'
 
 #user authentication

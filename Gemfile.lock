@@ -37,6 +37,13 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    coffee-rails (3.2.2)
+      coffee-script (>= 2.2.0)
+      railties (~> 3.2.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.6.2)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -46,6 +53,10 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    handlebars_assets (0.12.0)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt
     hike (1.2.2)
     i18n (0.6.4)
     journey (1.0.4)
@@ -134,7 +145,9 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
+  coffee-rails (~> 3.2.1)
   devise
+  handlebars_assets (~> 0.12.0)
   jquery-rails
   pg
   rails (= 3.2.11)
