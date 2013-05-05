@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Weight</th>
+      <th>Location</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {{#each gear_items}}
+    {{view Gearstack.ShowGearItemView gear_itemBinding="this"}}
+  {{/each}}
+
+  {{#if isNewVisible}}
+    <tr class="new-gear-item">
+      {{view Gearstack.NewGearItemView}}
+    </tr>
+  {{/if}}
+  </tbody>
+</table>
+
+<div class="commands">
+  <a href="#" {{action "showNew"}}>add gear</a>
+</div>

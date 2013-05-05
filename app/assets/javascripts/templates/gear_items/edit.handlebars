@@ -1,0 +1,13 @@
+{{#with gear_item}}
+    <td class="new-name">{{view Ember.TextField valueBinding="name" placeholder="name"}}</td>
+    <td class="new-description">{{view Ember.TextField valueBinding="description" placeholder="description"}}</td>
+    <td class="new-weight">{{view Ember.TextField valueBinding="weight" placeholder="weight (g)"}}</td>
+    <td class="new-location">{{view Ember.TextField valueBinding="location" placeholder="location"}}</td>
+    <td class="new-status">checked in</td>
+    <td class="actions">
+        <button type="submit">
+            {{#if id}}update{{else}}create{{/if}}
+        </button>
+        <a href="#" {{action "cancelForm"}}>cancel</a>
+    </td>
+{{/with}}
