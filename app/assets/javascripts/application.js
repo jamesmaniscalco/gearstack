@@ -12,4 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require ember
+//= require ember/gearstack
+//= require handlebars
+//= require ember
+//= require ember-data
+//= require_self
+//= require gearstack
+Gearstack = Ember.Application.create();
+
 //= require_tree .

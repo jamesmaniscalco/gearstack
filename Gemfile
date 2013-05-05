@@ -14,11 +14,15 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+# Include Ember.js for AJAX behavior
+gem 'ember-rails', '>= 0.12.0'
+gem 'ember-source', '1.0.0rc3.3'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  #gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
