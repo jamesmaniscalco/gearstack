@@ -12,8 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require ember
-//= require ember/gearstack
 //= require handlebars
 //= require ember
 //= require ember-data
