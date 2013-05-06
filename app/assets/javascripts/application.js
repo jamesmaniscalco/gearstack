@@ -12,5 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require_tree ./vendor
 //= require handlebars.runtime
+//= require_tree .
+//= require_tree ./templates

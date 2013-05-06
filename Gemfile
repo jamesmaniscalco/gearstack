@@ -20,11 +20,15 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'handlebars_assets', '~> 0.12.0'
+  gem 'hogan_assets'
   gem 'uglifier', '>= 1.0.3'
 end
 
 # jQuery and templating stuff
 gem 'jquery-rails'
+
+# better JSON serialization
+gem 'active_model_serializers'
 
 #user authentication
 gem 'devise'
