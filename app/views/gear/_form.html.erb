@@ -1,0 +1,14 @@
+<tr class="gear-item">
+
+<% form_for @gear_item do |f| %>
+
+    <td class="name"><%= f.text_field :name, :placeholder => "new gear item" %></td>
+    <td class="description"><%= f.text_field :description, :placeholder => "description" %></td>
+    <td class="weight"><%= f.text_field :weight, :placeholder => "weight (grams, optional)" %></td>
+    <td class="location"><%= f.text_field :location, :placeholder => "location (optional)" %></td>
+    <td class="status disabled">checked in</td>
+    <td class="gear-actions"></td>
+
+<% end %>
+
+</tr>

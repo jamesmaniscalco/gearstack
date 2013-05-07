@@ -21,9 +21,18 @@ class GearController < ApplicationController
       format.json { render json: @gear_item }
     end
   end
+
+  def new
+    @gear_item = GearItem.new()
+    respond_to do |format|
+      format.json { render json: @gear_item }
+    end
+  end
   
   def create
     @gear_item = GearItem.new(params[:gear_item])
+    @gear_item.status = 'checkedin'
+
     respond_to do |format|
       if @gear_item.save
         format.json { render json: @gear_item, status: :created, location: @gear_item }
