@@ -1,5 +1,7 @@
-
 class GearController < ApplicationController
+  # only respond to json requests
+  respond_to :json
+
   #filters
   before_filter :find_item, :only => [:show, :edit, :update, :destroy]
 
@@ -10,45 +12,34 @@ class GearController < ApplicationController
   def index
     @gear_items = GearItem.all
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @gear_items }
-    end
+    render json: @gear_items
   end
 
   def show
-    respond_to do |format|
-      format.json { render json: @gear_item }
-    end
+    render json: @gear_item
   end
   
   def create
     @gear_item = GearItem.new(params[:gear_item])
-    respond_to do |format|
-      if @gear_item.save
-        format.json { render json: @gear_item, status: :created, location: @gear_item }
-      else
-        format.json { render json: @gear_item.errors, status: :unprocessable_entity }
-      end
+    if @gear_item.save
+      render json: @gear_item, status: :created, location: @gear_item
+    else
+      render json: @gear_item.errors, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @gear_item.update_attributes(params[:gear_item])
-        format.json { render json: nil, status: :ok }
-      else
-        format.json { render json: @gear_item.errors, status: :unprocessable_entity }
-      end
+    if @gear_item.update_attributes(params[:gear_item])
+      render json: nil, status: :ok
+    else
+      render json: @gear_item.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     @gear_item.destroy
     
-    respond_to do |format|
-      format.json { render json: nil, status: :ok }
-    end
+    render json: nil, status: :ok
   end
 
 
