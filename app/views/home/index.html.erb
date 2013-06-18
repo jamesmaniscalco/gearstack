@@ -1,6 +1,6 @@
-<h1>Welcome!</h1>
 <p>Welcome to gearstack, the gear storage app.</p>
 
+<div ng-view></div>
 
 <% if user_signed_in? %>
   <p><%= link_to "sign out", destroy_user_session_path, :method => :delete %></p>

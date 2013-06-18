@@ -1,0 +1,26 @@
+<div ng-controller="GearController">
+    <div id="gear-item-list-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Weight</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="gearItem in gearItems">
+                    <td>{{gearItem.name}}</td>
+                    <td>{{gearItem.description}}</td>
+                    <td>{{gearItem.location}}</td>
+                    <td>{{gearItem.weight}}</td>
+                    <td>{{gearItem.status}}</td>
+                    <td>Actions</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

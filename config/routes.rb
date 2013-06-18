@@ -4,6 +4,7 @@ Gearstack::Application.routes.draw do
 
   root :to => "home#index"
 
-  resources :gear
-
+  scope '/api' do
+    resources :gear
+  end
 end
