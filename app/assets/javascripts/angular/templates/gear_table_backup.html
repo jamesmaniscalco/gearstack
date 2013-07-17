@@ -23,17 +23,21 @@
                 <tr id="new-item">
                   <td>Add new item...</td>
                 </tr>
-                <form class="" name="gearForm" ng-submit="addGearItem()" novalidate>
-                  <tr id="gear_form_tr">
+                <tr id="gear_form_tr">
+                  <form name="gearForm" novalidate ng-submit="addGearItem()">
                     <td><input type="string" name="name" ng-model="gearItem.name" placeholder="item name (required)" required /></td>
                     <td><input type="string" name="description" ng-model="gearItem.description" placeholder="item description" /></td>
                     <td><input type="string" name="location" ng-model="gearItem.location" placeholder="item location" /></td>
                     <td><input type="number" name="weight" ng-model="gearItem.weight" placeholder="item weight" /></td>
                     <td>checked in</td>
-                    <td><button type="submit" ng-disabled="isClean() || gearForm.$invalid">save item</button></td>
-                  </tr>
-                </form>
+                    <td><button type="submit" ng-disabled="gearForm.$invalid">save item</button></td>
+                  </form>
+                </tr>
             </tbody>
         </table>
+                <p>invalid? {{ gearForm.$invalid }}</p>
+                <p>valid? {{ gearForm.$valid }}</p>
+                <p>pristine? {{ gearForm.$pristine }}</p>
+                <p>name pristine? {{ gearForm.name.$pristine }}</p>
     </div>
 </div>

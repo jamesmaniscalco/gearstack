@@ -8,6 +8,6 @@ class GearItem < ActiveRecord::Base
   #validations
   validates :name, :presence => true
   validates :status, :presence => true
-  validates :weight, :numericality => true
+  validates :weight, :numericality => true, :allow_nil => true
   validates :status, :inclusion => { :in => %w(checkedin checkedout)}
 end

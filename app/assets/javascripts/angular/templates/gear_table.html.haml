@@ -1,0 +1,38 @@
+%div{"ng-controller" => "GearController"}
+  #gear-item-list-container
+    %form{:name => "gearForm", "ng-submit" => "addGearItem()", :novalidate => ""}
+      %table
+        %thead
+          %tr
+            %th Name
+            %th Description
+            %th Location
+            %th Weight
+            %th Status
+            %th Actions
+        %tbody
+          %tr{"ng-repeat" => "gearItem in gearItems"}
+            %td {{gearItem.name}}
+            %td {{gearItem.description}}
+            %td {{gearItem.location}}
+            %td {{gearItem.weight}}
+            %td {{gearItem.status}}
+            %td Actions
+          %tr#new-item
+            %td Add new item...
+          %tr#gear_form_tr
+            %td
+              %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
+            %td
+              %input{:name => "description", "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string"}
+            %td
+              %input{:name => "location", "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string"}
+            %td
+              %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
+            %td checked in
+            %td
+              %button{"ng-disabled" => "gearForm.$invalid", :type => "submit"} save item
+    %p invalid? {{ gearForm.$invalid }}
+    %p valid? {{ gearForm.$valid }}
+    %p pristine? {{ gearForm.$pristine }}
+    %p name pristine? {{ gearForm.name.$pristine }}
