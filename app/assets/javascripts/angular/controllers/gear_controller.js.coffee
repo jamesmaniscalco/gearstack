@@ -2,23 +2,30 @@ App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular)
     gearItems = Restangular.all('gear_items')
     $scope.gearItems = gearItems.getList()
 
+    # DOM manipulation
+    $scope.gearFormVisible = false
+
+    $scope.showGearForm = ->
+        $scope.gearFormVisible = true
+
+    $scope.hideGearForm = ->
+        $scope.gearFormVisible = false
+
+    # controller functions
     $scope.refreshGearItems = ->
         $scope.gearItems = gearItems.getList()
 
     $scope.addGearItem = ->
-      console.log('trying to save gearItem')
-      console.log($scope.gearItem)
-      # gearItem = GearItem.save $scope.gearItem, (gearItem) ->
-      #   console.log('successfully created item') 
-      #   $scope.gearItems.push(gearItem)
-      gearItems.post($scope.gearItem).then (response) ->
-        console.log response
-        console.log 'successfully posted item'
-        # $scope.gearItems.push $scope.gearItem
-        # console.log 'pushed item'
-        $scope.refreshGearItems()
-        console.log 'refreshed gear_items'
-      , ->
-        console.log 'error posting'
-        console.log response
+        # post gear item to server
+        gearItems.post($scope.gearItem).then (addedGearItem) ->
+            # push the new item into the table
+            $scope.gearItems.push addedGearItem
+            # $scope.refreshGearItems()
+            # if it works, hide the form (Should this go in a separate file?  A directive?)
+            $scope.hideGearForm()
+            # then delete object from the scope
+            $scope.gearItem = {}
+        , ->
+            console.log 'error posting GearItem'
+
   ]

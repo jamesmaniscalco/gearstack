@@ -1,6 +1,6 @@
 %div{"ng-controller" => "GearController"}
   #gear-item-list-container
-    %form{:name => "gearForm", "ng-submit" => "addGearItem()", :novalidate => ""}
+    %form{:name => "gearForm", :novalidate => ""}
       %table
         %thead
           %tr
@@ -19,8 +19,10 @@
             %td {{gearItem.status}}
             %td Actions
           %tr#new-item
-            %td Add new item...
-          %tr#gear_form_tr
+            %td
+              %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
+              %a{"ng-click" => "hideGearForm()", "ng-show" => "gearFormVisible", :href => ""} cancel
+          %tr#gear_form_tr{"ng-show" => "gearFormVisible"}
             %td
               %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
             %td
@@ -31,8 +33,11 @@
               %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
             %td checked in
             %td
-              %button{"ng-disabled" => "gearForm.$invalid", :type => "submit"} save item
+              %button{"ng-disabled" => "gearForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
     %p invalid? {{ gearForm.$invalid }}
     %p valid? {{ gearForm.$valid }}
     %p pristine? {{ gearForm.$pristine }}
     %p name pristine? {{ gearForm.name.$pristine }}
+    %p gear form shown? {{ gearFormVisible }}
+    %p
+      %button{"ng-click" => "refreshGearItems()"} refresh gear items

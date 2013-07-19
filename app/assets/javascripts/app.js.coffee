@@ -5,7 +5,8 @@ window.App = angular.module('Gearstack', ['ngResource', 'restangular'])
       controller: "GearController"
     ).otherwise redirectTo: "/"
   ])
-  .config (RestangularProvider) ->
+  
+App.config (RestangularProvider) ->
     RestangularProvider.setBaseUrl("/api/v1")
 
 # configure app to add X-CSRF-Token to headers to make Rails happy
