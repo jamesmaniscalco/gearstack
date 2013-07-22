@@ -1,4 +1,4 @@
-window.App = angular.module('Gearstack', ['ngResource', 'restangular'])
+window.App = angular.module('Gearstack', ['ngResource', 'restangular', 'gearstackFilters'])
   .config(["$routeProvider", ($routeProvider) ->
     $routeProvider.when("/",
       templateUrl: "/assets/angular/templates/gear_table.html"

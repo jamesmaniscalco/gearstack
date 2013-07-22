@@ -1,6 +1,7 @@
-App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-    gearItems = Restangular.all('gear_items')
-    $scope.gearItems = gearItems.getList()
+# App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
+App.controller 'GearController', ['$scope', 'GearItems', ($scope, GearItems) ->
+    # gearItems = Restangular.all('gear_items')
+    $scope.gearItems = GearItems.getList()
 
     # DOM manipulation
     $scope.gearFormVisible = false
@@ -13,11 +14,11 @@ App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular)
 
     # controller functions
     $scope.refreshGearItems = ->
-        $scope.gearItems = gearItems.getList()
+        $scope.gearItems = GearItems.getList()
 
     $scope.addGearItem = ->
         # post gear item to server
-        gearItems.post($scope.gearItem).then (addedGearItem) ->
+        GearItems.post($scope.gearItem).then (addedGearItem) ->
             # push the new item into the table
             $scope.gearItems.push addedGearItem
             # $scope.refreshGearItems()
