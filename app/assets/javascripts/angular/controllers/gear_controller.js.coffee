@@ -12,9 +12,22 @@ App.controller 'GearController', ['$scope', 'GearItems', ($scope, GearItems) ->
     $scope.hideGearForm = ->
         $scope.gearFormVisible = false
 
+    $scope.itemIsCheckedIn = (gearItem) ->
+        if gearItem.status == 'checkedin'
+            true
+        else
+            false
+
+    $scope.itemIsCheckedOut = (gearItem) ->
+        if gearItem.status == 'checkedout'
+            true
+        else
+            false
+
     # controller functions
     $scope.refreshGearItems = ->
         $scope.gearItems = GearItems.getList()
+        console.log $scope.gearItems
 
     $scope.addGearItem = ->
         # post gear item to server
@@ -28,5 +41,15 @@ App.controller 'GearController', ['$scope', 'GearItems', ($scope, GearItems) ->
             $scope.gearItem = {}
         , ->
             console.log 'error posting GearItem'
+
+    $scope.checkOutGearItem = (gearItem) ->
+        # update item
+        gearItem.status = 'checkedout'
+        gearItem.put()
+
+    $scope.checkInGearItem = (gearItem) ->
+        # update item
+        gearItem.status = 'checkedin'
+        gearItem.put()
 
   ]
