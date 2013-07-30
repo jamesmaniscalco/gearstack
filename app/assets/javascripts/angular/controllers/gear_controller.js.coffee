@@ -1,7 +1,12 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', 'GearItems', ($scope, GearItems) ->
-    # gearItems = Restangular.all('gear_items')
-    $scope.gearItems = GearItems.getList()
+App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItems', ($scope, $q, resolvedGearItems, GearItems) ->
+    # pull in data from the resolve in the $routeProvider
+    if resolvedGearItems.status = true
+        console.log 'success'
+        $scope.gearItems = resolvedGearItems.data
+    else
+        console.log 'error'
+        console.log resolvedGearItems.data
 
     # DOM manipulation
     $scope.gearFormVisible = false
@@ -27,7 +32,6 @@ App.controller 'GearController', ['$scope', 'GearItems', ($scope, GearItems) ->
     # controller functions
     $scope.refreshGearItems = ->
         $scope.gearItems = GearItems.getList()
-        console.log $scope.gearItems
 
     $scope.addGearItem = ->
         # post gear item to server
