@@ -2,7 +2,6 @@
 App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItems', ($scope, $q, resolvedGearItems, GearItems) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.status = true
-        console.log 'success'
         $scope.gearItems = resolvedGearItems.data
     else
         console.log 'error'
