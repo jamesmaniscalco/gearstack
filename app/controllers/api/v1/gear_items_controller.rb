@@ -4,15 +4,19 @@ module Api
       # only respond to json requests
       respond_to :json
 
-      #filters
-      before_filter :find_item, :only => [:show, :edit, :update, :destroy]
+      #filters:
+      #authentication
+      before_filter :authenticate_user!
+      #permissions, etc
+      before_filter :find_item, :only => [:show, :update, :destroy]
+      before_filter :user_owns_or_possesses_item, :only => [:show, :update, :destroy]
 
 
 
       # CRUD!
 
       def index
-        @gear_items = GearItem.all
+        @gear_items = GearItem.all_for_user(current_user)
         render json: @gear_items
       end
 
@@ -23,7 +27,9 @@ module Api
       def create
         @gear_item = GearItem.new(params[:gear_item])
         #@gear_item = GearItem.new(params)
-        @gear_item.status = 'checkedin'
+        @gear_item.status = 'checkedin'  # set the status to be checked in by default
+        @gear_item.owner = current_user  # and set the owner and possessor to be the current user.
+        @gear_item.possessor = current_user
         if @gear_item.save
           render json: @gear_item, status: :created, location: @gear_item
         else
@@ -32,7 +38,23 @@ module Api
       end
 
       def update
-        if @gear_item.update_attributes(params[:gear_item])
+        # first, assign the attributes (without saving)
+        @gear_item.assign_attributes(params[:gear_item])
+
+        # check that the user has permissions to do the update:
+
+        # if they're changing the status, check that they possess it
+        if @gear_item.status_changed? and @gear_item.possessor != current_user
+          permissions_error and return
+        end
+
+        # if they're changing anything else, check that they own it.  this is sloppy, make it better
+        if (@gear_item.name_changed? or @gear_item.description_changed? or @gear_item.weight_changed?) and @gear_item.owner != current_user
+          permissions_error and return
+        end
+
+        # OK, made it this far.  Try and save it.
+        if @gear_item.save()
           render json: nil, status: :ok
         else
           render json: @gear_item.errors, status: :unprocessable_entity
@@ -49,6 +71,16 @@ module Api
 
       def find_item
         @gear_item = GearItem.find(params[:id])
+      end
+
+      def permissions_error
+        render json: {'error' => 'You are not authorized to make that request.'}, status: :unauthorized
+      end
+
+      def user_owns_or_possesses_item
+        if @gear_item.owner != current_user and @gear_item.possessor != current_user
+          permissions_error and return
+        end
       end
     end
   end

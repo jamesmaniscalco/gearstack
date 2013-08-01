@@ -48,11 +48,19 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
     $scope.checkOutGearItem = (gearItem) ->
         # update item
         gearItem.status = 'checkedout'
-        gearItem.put()
+        gearItem.put().then (data) ->
+                {}
+            , (data) ->
+                gearItem.status = 'checkedin'
+                console.log 'error: ' + data.data.error
 
     $scope.checkInGearItem = (gearItem) ->
         # update item
         gearItem.status = 'checkedin'
-        gearItem.put()
+        gearItem.put().then (data) ->
+                {}
+            , (data) ->
+                gearItem.status = 'checkedout'
+                console.log 'error: ' + data.data.error
 
   ]
