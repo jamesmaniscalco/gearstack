@@ -11,7 +11,7 @@
             %th Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:"name"'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:"name"', "ng-class" =>'gearItem.status'}
             %td {{gearItem.name}}
             %td {{gearItem.description}}
             %td {{gearItem.location}}

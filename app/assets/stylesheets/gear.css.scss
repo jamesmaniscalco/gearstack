@@ -1,3 +1,37 @@
-// Place all the styles related to the gear controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// styles for Gearstack
+
+// colors, text, etc.
+$color-a: #ff9242;
+$color-a-light: #ffb37a;
+$color-a-dark: #b87f55;
+$color-b: #39ddcb;
+$color-b-light: #9ef1e8;
+$color-b-dark: #4a9f96;
+$color-c: #ffc542;
+$color-c-light: #ffd77a;
+$color-c-dark: #9c7212;
+$color-d: #f8406b;
+$color-d-light: #fc7997;
+$color-d-dark: #971130;
+
+$color-disabled-light: #d9d9d9;
+$color-disabled-dark: #9e9e9e;
+
+
+
+
+// Gear table formatting
+
+tr.onloan {
+    background-color: $color-disabled-light;
+    color: $color-disabled-dark;
+    font-style: italic;
+}
+
+tr.checkedin {
+    background-color: $color-c-light;
+}
+
+tr.checkedout {
+    background-color: $color-d-light;
+}

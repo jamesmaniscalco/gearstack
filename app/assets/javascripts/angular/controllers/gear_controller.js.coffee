@@ -1,5 +1,5 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItems', ($scope, $q, resolvedGearItems, GearItems) ->
+App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, resolvedGearItems, GearItems, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.status = true
         $scope.gearItems = resolvedGearItems.data
@@ -27,6 +27,7 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
             true
         else
             false
+
 
     # controller functions
     $scope.refreshGearItems = ->

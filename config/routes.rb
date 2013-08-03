@@ -12,6 +12,7 @@ Gearstack::Application.routes.draw do
   namespace :api do
   	namespace :v1 do
   		resources :gear_items
+      match 'status', to: 'user_status#status', via: :get
   	end
   end
 

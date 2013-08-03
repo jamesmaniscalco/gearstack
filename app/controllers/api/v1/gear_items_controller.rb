@@ -17,11 +17,11 @@ module Api
 
       def index
         @gear_items = GearItem.all_for_user(current_user)
-        render json: @gear_items
+        # render json: @gear_items
       end
 
       def show
-        render json: @gear_item
+        # render json: @gear_item
       end
       
       def create
