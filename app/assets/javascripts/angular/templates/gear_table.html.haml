@@ -11,7 +11,7 @@
             %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:gearTableOrder', "ng-class" =>'gearItem.status'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:gearTableOrder', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)'}
             %td {{gearItem.name}}
             %td {{gearItem.description}}
             %td {{gearItem.location}}
@@ -41,6 +41,10 @@
             %td checked in
             %td
               %button{"ng-disabled" => "gearForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
+    %p
+      %a{"ng-show" => "onLoanItemsVisible", "ng-click" => "hideOnLoanItems()", :href => ""} Hide items on loan
+      %a{"ng-hide" => "onLoanItemsVisible", "ng-click" => "showOnLoanItems()", :href => ""} Show items on loan
+
     %p invalid? {{ gearForm.$invalid }}
     %p valid? {{ gearForm.$valid }}
     %p pristine? {{ gearForm.$pristine }}

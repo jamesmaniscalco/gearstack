@@ -35,6 +35,22 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
         else
             $scope.gearTableOrder = order
 
+    $scope.onLoanItemsVisible = true
+    $scope.showOnLoanItems = () ->
+        $scope.onLoanItemsVisible = true
+    $scope.hideOnLoanItems = () ->
+        $scope.onLoanItemsVisible = false
+
+    $scope.gearItemVisible = (gearItem) ->
+        # default is true...
+        visible = true
+        # first check if we are showing or hiding onloan items
+        if gearItem.status == 'onloan' and $scope.onLoanItemsVisible == false
+            visible = false
+        # finally return the result
+        return visible
+
+
 
     # controller functions
     $scope.refreshGearItems = ->
