@@ -4,14 +4,14 @@
       %table
         %thead
           %tr
-            %th Name
-            %th Description
-            %th Location
-            %th Weight
-            %th Status
+            %th{"ng-click" => 'setGearTableOrder("name")'} Name
+            %th{"ng-click" => 'setGearTableOrder("description")'} Description
+            %th{"ng-click" => 'setGearTableOrder("location")'} Location
+            %th{"ng-click" => 'setGearTableOrder("weight")'} Weight
+            %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:"name"', "ng-class" =>'gearItem.status'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:gearTableOrder', "ng-class" =>'gearItem.status'}
             %td {{gearItem.name}}
             %td {{gearItem.description}}
             %td {{gearItem.location}}
@@ -24,6 +24,11 @@
             %td
               %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
               %a{"ng-click" => "hideGearForm()", "ng-show" => "gearFormVisible", :href => ""} cancel
+            %td
+            %td
+            %td
+            %td
+            %td
           %tr#gear_form_tr{"ng-show" => "gearFormVisible"}
             %td
               %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}

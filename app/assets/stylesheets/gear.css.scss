@@ -8,7 +8,7 @@ $color-b: #39ddcb;
 $color-b-light: #9ef1e8;
 $color-b-dark: #4a9f96;
 $color-c: #ffc542;
-$color-c-light: #ffd77a;
+$color-c-light: #fff2d9;
 $color-c-dark: #9c7212;
 $color-d: #f8406b;
 $color-d-light: #fc7997;
@@ -19,8 +19,31 @@ $color-disabled-dark: #9e9e9e;
 
 
 
+// page-wide formatting
+html {
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+
 
 // Gear table formatting
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 5px;
+}
+
+th {
+    text-align: left;
+}
+
+tr {
+    border: 1px solid #aeaeae;
+}
 
 tr.onloan {
     background-color: $color-disabled-light;

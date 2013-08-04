@@ -28,6 +28,13 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
         else
             false
 
+    $scope.gearTableOrder = 'name'
+    $scope.setGearTableOrder = (order) ->
+        if $scope.gearTableOrder == order
+            $scope.gearTableOrder = '-' + order
+        else
+            $scope.gearTableOrder = order
+
 
     # controller functions
     $scope.refreshGearItems = ->
