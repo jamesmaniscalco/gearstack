@@ -1,16 +1,18 @@
-angular.module('gearstackFilters', []).filter 'prettyStatus', () ->
+gearstackFilters = angular.module('gearstackFilters', [])
+
+gearstackFilters.filter 'prettyStatus', () ->
     (input) ->
-        # console.log input
-        # if input == 'onloan'
-        #     'on loan'
-        # if input == 'checkedout'
-        #     'checked out'
-        # if input == 'checkedin'
-        #     'checked in'
-        # else
-        #     console.log 'error formatting pretty status!'
         switch input
             when 'onloan' then 'on loan'
             when 'checkedin' then 'checked in'
             when 'checkedout' then 'checked out'
             else console.log 'error formatting pretty status!'
+
+gearstackFilters.filter 'titleCase', () ->
+    (input) ->
+        wordsIn = input.split(' ');
+        wordsOut = []
+        for word in wordsIn
+            word = word[0].toUpperCase() + word[1..-1];
+            wordsOut.push word
+        return wordsOut.join(' ');

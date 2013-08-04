@@ -35,7 +35,19 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
         else
             $scope.gearTableOrder = order
 
+    $scope.showGearTableSortIcon = (columnName, order) ->
+        visible = false
+        if order == "reverse"
+            if $scope.gearTableOrder == '-' + columnName
+                visible = true
+        else
+            if $scope.gearTableOrder == columnName
+                visible = true
+        return visible
+
+    #can we see the items that are on loan?
     $scope.onLoanItemsVisible = true
+    #some methods to toggle that
     $scope.showOnLoanItems = () ->
         $scope.onLoanItemsVisible = true
     $scope.hideOnLoanItems = () ->
@@ -49,6 +61,15 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
             visible = false
         # finally return the result
         return visible
+
+    #dynamically load table headers
+    $scope.gearTableHeadings = [
+        'name',
+        'description',
+        'location',
+        'weight',
+        'status'
+    ]
 
 
 

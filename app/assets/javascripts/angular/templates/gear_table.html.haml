@@ -4,14 +4,21 @@
       %table
         %thead
           %tr
-            %th{"ng-click" => 'setGearTableOrder("name")'} Name
-            %th{"ng-click" => 'setGearTableOrder("description")'} Description
-            %th{"ng-click" => 'setGearTableOrder("location")'} Location
-            %th{"ng-click" => 'setGearTableOrder("weight")'} Weight
-            %th{"ng-click" => 'setGearTableOrder("status")'} Status
+            %th{"ng-repeat" => 'heading in gearTableHeadings', "ng-click" => 'setGearTableOrder(heading)'}
+              %span {{heading | titleCase}}
+              %span{"class" => 'down-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "forward")'}
+              %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "reverse")'}
+            / %th{"ng-click" => 'setGearTableOrder("name")'}
+            /   %span Name
+            /   %span{"class" => 'down-sort-triangle', "ng-show" => 'showGearTableSortIcon("name", "forward")'}
+            /   %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon("name", "reverse")'}
+            / %th{"ng-click" => 'setGearTableOrder("description")'} Description
+            / %th{"ng-click" => 'setGearTableOrder("location")'} Location
+            / %th{"ng-click" => 'setGearTableOrder("weight")'} Weight
+            / %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:gearTableOrder', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)'}
             %td {{gearItem.name}}
             %td {{gearItem.description}}
             %td {{gearItem.location}}
@@ -52,3 +59,5 @@
     %p gear form shown? {{ gearFormVisible }}
     %p
       %button{"ng-click" => "refreshGearItems()"} refresh gear items
+
+%span{"class" => 'up-sort-triangle', "ng-show" => true}

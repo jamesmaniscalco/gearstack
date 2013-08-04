@@ -58,3 +58,22 @@ tr.checkedin {
 tr.checkedout {
     background-color: $color-d-light;
 }
+
+// sorting icons
+.up-sort-triangle {
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    border-bottom: 8px solid black; 
+    border-left: 5px solid transparent; 
+    border-right: 5px solid transparent; 
+}
+
+.down-sort-triangle {
+    display: inline-block;
+    width: 0; 
+    height: 0;
+    border-top: 8px solid black;
+    border-left: 5px solid transparent; 
+    border-right: 5px solid transparent; 
+}
