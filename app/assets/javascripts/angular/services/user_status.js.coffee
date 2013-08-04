@@ -1,5 +1,5 @@
 # gets user status from the server
-App.factory 'UserStatus', ['Restangular', (Restangular) ->
-    UserStatus = Restangular.one 'status'
-    return UserStatus
+App.factory 'UserStatus', ['$http', ($http) ->
+    # poll the server every ten seconds or so.
+    userStatus = {}
 ]

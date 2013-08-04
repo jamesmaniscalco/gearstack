@@ -1,11 +1,20 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, resolvedGearItems, GearItems, UserStatus) ->
+App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolvedGearItems', 'GearItems', ($scope, $q, $http, $timeout, resolvedGearItems, GearItems) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.status = true
         $scope.gearItems = resolvedGearItems.data
     else
         console.log 'error'
         console.log resolvedGearItems.data
+
+    # keep track of things in User Status
+    $scope.userStatus = {}
+    updateUserStatus = () ->
+        $http.get('/api/v1/status').success (statusData) ->
+            $scope.userStatus = statusData
+            console.log 'status data: ' + statusData
+            $timeout updateUserStatus, 10000
+    updateUserStatus()
 
     # DOM manipulation
     $scope.gearFormVisible = false
@@ -15,6 +24,12 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
 
     $scope.hideGearForm = ->
         $scope.gearFormVisible = false
+
+    $scope.itemBelongsToCurrentUser = (gearItem) ->
+        if gearItem.owner_id == $scope.userStatus.current_user_id
+            true
+        else
+            false
 
     $scope.itemIsCheckedIn = (gearItem) ->
         if gearItem.status == 'checkedin'
@@ -107,5 +122,17 @@ App.controller 'GearController', ['$scope', '$q', 'resolvedGearItems', 'GearItem
             , (data) ->
                 gearItem.status = 'checkedout'
                 console.log 'error: ' + data.data.error
+
+    $scope.removeGearItem = (gearItem) ->
+        confirmText =  'Are you sure you want to delete "' + gearItem.name + '" from your library?'
+        deleteGearItem = confirm confirmText
+
+        if deleteGearItem
+            gearItem.remove().then () ->
+                    # if delete was successful on server, remove from the scope
+                    $scope.gearItems = _.without $scope.gearItems, gearItem
+                , () ->
+                    # if it wasn't, do an alert (TODO: make this nicer later!)
+                    alert gearItem.name + ' not deleted (server communication error)'
 
   ]

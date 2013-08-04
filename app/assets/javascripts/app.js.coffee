@@ -7,10 +7,10 @@ App.config ["$routeProvider", ($routeProvider) ->
       resolve: {
         resolvedGearItems: (GearItems) ->
             GearItems.getList().then(
-                    (response) ->
+                    (gearItemList) ->
                         { 
                             success: true,
-                            data: response
+                            data: gearItemList
                         }
                     ,
                     (error) ->

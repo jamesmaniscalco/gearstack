@@ -9,7 +9,8 @@ module Api
       before_filter :authenticate_user!
       #permissions, etc
       before_filter :find_item, :only => [:show, :update, :destroy]
-      before_filter :user_owns_or_possesses_item, :only => [:show, :update, :destroy]
+      before_filter :user_owns_or_possesses_item, :only => [:show, :update]
+      before_filter :user_owns_and_possesses_item, :only => [:destroy]
 
 
 
@@ -79,6 +80,12 @@ module Api
 
       def user_owns_or_possesses_item
         if @gear_item.owner != current_user and @gear_item.possessor != current_user
+          permissions_error and return
+        end
+      end
+
+      def user_owns_and_possesses_item
+        if @gear_item.owner != current_user or @gear_item.possessor != current_user
           permissions_error and return
         end
       end
