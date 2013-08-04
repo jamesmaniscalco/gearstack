@@ -22,20 +22,17 @@
             %td {{gearItem.name}}
             %td {{gearItem.description}}
             %td {{gearItem.location}}
-            %td {{gearItem.weight}}
+            %td{:align => 'right'} {{gearItem.weight}}
             %td {{gearItem.status | prettyStatus}}
             %td
               %a{"ng-show" => "itemIsCheckedIn(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
               %a{"ng-show" => "itemIsCheckedOut(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
+          %tr#no-items{"ng-show" => 'gearItems.length == 0'}
+            %td{:colspan => 6} No gear items yet.  Add some!
           %tr#new-item
-            %td
+            %td{:colspan => 6}
               %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
               %a{"ng-click" => "hideGearForm()", "ng-show" => "gearFormVisible", :href => ""} cancel
-            %td
-            %td
-            %td
-            %td
-            %td
           %tr#gear_form_tr{"ng-show" => "gearFormVisible"}
             %td
               %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
