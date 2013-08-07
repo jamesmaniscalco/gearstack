@@ -30,3 +30,7 @@ App.config (RestangularProvider) ->
 App.config ["$httpProvider", ($httpProvider) ->
     $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 ]
+
+# start up the User Status service to make sure that we get the status on load
+App.run (UserStatus) ->
+  

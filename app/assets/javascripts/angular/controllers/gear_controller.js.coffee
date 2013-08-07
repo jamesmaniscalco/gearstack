@@ -1,5 +1,5 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolvedGearItems', 'GearItems', ($scope, $q, $http, $timeout, resolvedGearItems, GearItems) ->
+App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, $http, $timeout, resolvedGearItems, GearItems, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.status = true
         $scope.gearItems = resolvedGearItems.data
@@ -8,13 +8,11 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolved
         console.log resolvedGearItems.data
 
     # keep track of things in User Status
-    $scope.userStatus = {}
-    updateUserStatus = () ->
-        $http.get('/api/v1/status').success (statusData) ->
-            $scope.userStatus = statusData
-            console.log 'status data: ' + statusData
-            $timeout updateUserStatus, 10000
-    updateUserStatus()
+    updateUserStatus = (userStatusData) ->
+        $scope.userStatus = userStatusData
+
+    # register the callback with User Status to keep it updated
+    UserStatus.registerObserverCallback(updateUserStatus)
 
     # DOM manipulation
     $scope.gearFormVisible = false
@@ -26,7 +24,13 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolved
         $scope.gearFormVisible = false
 
     $scope.itemBelongsToCurrentUser = (gearItem) ->
-        if gearItem.owner_id == $scope.userStatus.current_user_id
+        if $scope.userStatus and (gearItem.owner_id == $scope.userStatus.current_user_id)  # ugly-ish hack to avoid error messages made during the render, because we don't immediately have the user status.  This should probably get fixed with the user status, so we make sure we get that first.
+            true
+        else
+            false
+
+    $scope.itemIsPossessedByCurrentUser = (gearItem) ->
+        if $scope.userStatus and (gearItem.possessor_id == $scope.userStatus.current_user_id)
             true
         else
             false

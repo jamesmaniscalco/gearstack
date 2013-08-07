@@ -27,7 +27,7 @@
             %td
               %a{"ng-show" => "itemIsCheckedIn(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
               %a{"ng-show" => "itemIsCheckedOut(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
-              %a{"ng-show" => "itemBelongsToCurrentUser(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
+              %a{"ng-show" => "itemBelongsToCurrentUser(gearItem) && itemIsPossessedByCurrentUser(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
           %tr#no-items{"ng-show" => 'gearItems.length == 0'}
             %td{:colspan => 6} No gear items yet.  Add some!
           %tr#new-item
