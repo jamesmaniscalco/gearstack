@@ -27,7 +27,10 @@
             %td
               %a{"ng-show" => "itemIsCheckedIn(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
               %a{"ng-show" => "itemIsCheckedOut(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
-              %a{"ng-show" => "itemBelongsToCurrentUser(gearItem) && itemIsPossessedByCurrentUser(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
+              %a{"ng-show" => "okToDeleteGearItem(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
+              %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
+              %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
+              %a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
           %tr#no-items{"ng-show" => 'gearItems.length == 0'}
             %td{:colspan => 6} No gear items yet.  Add some!
           %tr#new-item
@@ -50,11 +53,6 @@
       %a{"ng-show" => "onLoanItemsVisible", "ng-click" => "hideOnLoanItems()", :href => ""} Hide items on loan
       %a{"ng-hide" => "onLoanItemsVisible", "ng-click" => "showOnLoanItems()", :href => ""} Show items on loan
 
-    %p invalid? {{ gearForm.$invalid }}
-    %p valid? {{ gearForm.$valid }}
-    %p pristine? {{ gearForm.$pristine }}
-    %p name pristine? {{ gearForm.name.$pristine }}
-    %p gear form shown? {{ gearFormVisible }}
     %p
       %button{"ng-click" => "refreshGearItems()"} refresh gear items
 

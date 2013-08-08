@@ -90,6 +90,37 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolved
         'status'
     ]
 
+    # editing things
+    $scope.editingGearItemEnabled = false
+    $scope.gearItemBeingEdited = null
+
+    # are we editing a given item?
+    $scope.editingThisGearItem = (gearItem) ->
+        if $scope.gearItemBeingEdited == gearItem.id
+            true
+        else
+            false
+
+    # set it to edit!
+    $scope.editGearItem = (gearItem) ->
+        $scope.gearItemBeingEdited = gearItem.id
+
+    $scope.cancelEditGearItem = () ->
+        $scope.gearItemBeingEdited = null
+
+    # check if it's OK to do certain things
+    $scope.okToEditGearItem = (gearItem) -> # disable if something is being edited already
+        if (not $scope.gearItemBeingEdited) and ($scope.gearItemBeingEdited != gearItem.id and $scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+            true
+        else
+            false
+
+    $scope.okToDeleteGearItem = (gearItem) -> # disable if something is being edited
+        if (not $scope.gearItemBeingEdited) and ($scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+            true
+        else
+            false
+
 
 
     # controller functions
