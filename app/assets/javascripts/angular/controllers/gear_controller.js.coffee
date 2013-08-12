@@ -1,5 +1,5 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, $http, $timeout, resolvedGearItems, GearItems, UserStatus) ->
+App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangular', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, $http, $timeout, Restangular, resolvedGearItems, GearItems, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.status = true
         $scope.gearItems = resolvedGearItems.data
@@ -91,32 +91,50 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolved
     ]
 
     # editing things
-    $scope.editingGearItemEnabled = false
+    #$scope.editingGearItemEnabled = false
+    $scope.gearItemBeingEditedId = null
     $scope.gearItemBeingEdited = null
 
     # are we editing a given item?
     $scope.editingThisGearItem = (gearItem) ->
-        if $scope.gearItemBeingEdited == gearItem.id
+        #if $scope.gearItemBeingEdited == gearItem.id
+        if $scope.gearItemBeingEditedId == gearItem.id
             true
         else
             false
 
     # set it to edit!
     $scope.editGearItem = (gearItem) ->
-        $scope.gearItemBeingEdited = gearItem.id
+        # $scope.gearItemBeingEdited = gearItem.id
+        $scope.gearItemBeingEdited = Restangular.copy gearItem
+        $scope.gearItemBeingEditedId = $scope.gearItemBeingEdited.id
 
-    $scope.cancelEditGearItem = () ->
+
+    $scope.cancelEditGearItem = ->
         $scope.gearItemBeingEdited = null
+        $scope.gearItemBeingEditedId = null
 
     # check if it's OK to do certain things
     $scope.okToEditGearItem = (gearItem) -> # disable if something is being edited already
-        if (not $scope.gearItemBeingEdited) and ($scope.gearItemBeingEdited != gearItem.id and $scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+        if (not $scope.gearItemBeingEditedId) and ($scope.gearItemBeingEditedId != gearItem.id and $scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
             true
         else
             false
 
     $scope.okToDeleteGearItem = (gearItem) -> # disable if something is being edited
-        if (not $scope.gearItemBeingEdited) and ($scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+        if (not $scope.gearItemBeingEditedId) and ($scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+            true
+        else
+            false
+
+    $scope.okToCheckOutItem = (gearItem) ->
+        if $scope.itemIsCheckedIn(gearItem) and not $scope.gearItemBeingEditedId
+            true
+        else
+            false
+
+    $scope.okToCheckInItem = (gearItem) ->
+        if $scope.itemIsCheckedOut(gearItem) and not $scope.gearItemBeingEditedId
             true
         else
             false
@@ -163,11 +181,21 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'resolved
         deleteGearItem = confirm confirmText
 
         if deleteGearItem
-            gearItem.remove().then () ->
+            gearItem.remove().then ->
                     # if delete was successful on server, remove from the scope
                     $scope.gearItems = _.without $scope.gearItems, gearItem
-                , () ->
+                , ->
                     # if it wasn't, do an alert (TODO: make this nicer later!)
                     alert gearItem.name + ' not deleted (server communication error)'
 
+    $scope.updateGearItem = (gearItem) ->
+        # remember we have an unedited copy in $scope.gearItemBeingEdited
+        gearItem.put().then (data) ->
+                # if successful, we can just set editing mode off
+                $scope.cancelEditGearItem()
+            , (data) ->
+                # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
+                gearItem = Restangular.copy $scope.gearItemBeingEdited
+                alert gearItem.name + ' not updated (server communication error)'
+                $scope.cancelEditGearItem()
   ]

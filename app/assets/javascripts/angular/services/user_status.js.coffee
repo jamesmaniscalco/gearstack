@@ -20,6 +20,8 @@ App.factory 'UserStatus', ['$http', '$timeout', ($http, $timeout) ->
         _.each observerCallbacks, (callback) ->
             callback(this.userStatus)
 
+    updateErrors = 0
+
     # define our timeout function...
     updateUserStatus = () ->
         $http.get('/api/v1/status.json').success (statusData) ->
@@ -27,12 +29,15 @@ App.factory 'UserStatus', ['$http', '$timeout', ($http, $timeout) ->
             this.userStatus = statusData
             notifyObservers()
             startStatusTimeout()
+            updateErrors = 0    # reset error counter
         .error (error, status) ->
             # if there's an error, log it
             console.log 'error:'
             console.log error
             console.log status
-            startStatusTimeout()
+            updateErrors += 1
+            if updateErrors < 5    # if it fails 5 times, quit.  This should be fixed for prod
+                startStatusTimeout()
 
     # a shortcut for starting the timeout
     startStatusTimeout = () ->

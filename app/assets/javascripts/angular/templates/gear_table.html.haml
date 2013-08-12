@@ -19,18 +19,33 @@
             %th Actions
         %tbody
           %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)'}
-            %td {{gearItem.name}}
-            %td {{gearItem.description}}
-            %td {{gearItem.location}}
-            %td{:align => 'right'} {{gearItem.weight}}
-            %td {{gearItem.status | prettyStatus}}
             %td
-              %a{"ng-show" => "itemIsCheckedIn(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
-              %a{"ng-show" => "itemIsCheckedOut(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
+              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
+              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
+                %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
+            %td
+              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.description}}
+              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
+                %input{:name => "description", "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string"}
+            %td
+              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
+              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
+                %input{:name => "location", "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string"}
+            %td{:align => 'right'}
+              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight}}
+              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
+                %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
+
+            %td
+              %span {{gearItem.status | prettyStatus}}
+            %td
+              %a{"ng-show" => "okToCheckOutItem(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
+              %a{"ng-show" => "okToCheckInItem(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
               %a{"ng-show" => "okToDeleteGearItem(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
               %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
               %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
-              %a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
+              %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
+              /%a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
           %tr#no-items{"ng-show" => 'gearItems.length == 0'}
             %td{:colspan => 6} No gear items yet.  Add some!
           %tr#new-item
