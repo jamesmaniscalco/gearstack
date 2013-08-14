@@ -9,6 +9,7 @@ module Api
       before_filter :authenticate_user!
       #permissions, etc.
       before_filter :find_list, :only => [:show, :update, :destroy]
+      before_filter :user_owns_list, :only => [:show, :update, :destroy]
 
 
       def index
@@ -50,6 +51,15 @@ module Api
         @gear_list = GearList.find(params[:id])
       end
 
+      def permissions_error
+        render json: {'error' => 'You are not authorized to make that request.'}, status: :unauthorized
+      end
+
+      def user_owns_list
+        if @gear_list.user != current_user
+          permissions_error and return
+        end
+      end
     end
   end
 end
