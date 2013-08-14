@@ -55,9 +55,9 @@
             %td{:colspan => 6} No gear items match your search.
           %tr#new-item
             %td{:colspan => 6}
-              %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
-              %a{"ng-click" => "hideGearForm()", "ng-show" => "gearFormVisible", :href => ""} cancel
-          %tr#gear_form_tr{"ng-show" => "gearFormVisible", "ng-form" => 'newGearItemForm'}
+              %button{"ng-click" => "showAddGearForm()", "ng-hide" => "addGearFormVisible", "ng-disabled" => '!okToAddGearItem()', :href => ""} Add new item...
+              %button{"ng-click" => "hideAddGearForm()", "ng-show" => "addGearFormVisible", :href => ""} cancel
+          %tr#gear_form_tr{"ng-show" => "addGearFormVisible", "ng-form" => 'newGearItemForm'}
             %td
               %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
             %td

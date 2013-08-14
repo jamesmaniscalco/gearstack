@@ -15,13 +15,21 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     UserStatus.registerObserverCallback(updateUserStatus)
 
     # DOM manipulation
-    $scope.gearFormVisible = false
+    $scope.addGearFormVisible = false
 
-    $scope.showGearForm = ->
-        $scope.gearFormVisible = true
+    $scope.showAddGearForm = ->
+        $scope.addGearFormVisible = true
+        # and just in case they get through the disable,
+        $scope.cancelEditGearItem()
 
-    $scope.hideGearForm = ->
-        $scope.gearFormVisible = false
+    $scope.hideAddGearForm = ->
+        $scope.addGearFormVisible = false
+
+    $scope.okToAddGearItem = () ->
+        if not $scope.gearItemBeingEditedId # if we're editing something, set it to false
+            true
+        else
+            false
 
     $scope.itemBelongsToCurrentUser = (gearItem) ->
         if $scope.userStatus and (gearItem.owner_id == $scope.userStatus.current_user_id)  # ugly-ish hack to avoid error messages made during the render, because we don't immediately have the user status.  This should probably get fixed with the user status, so we make sure we get that first.
@@ -92,6 +100,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     # editing things
     #$scope.editingGearItemEnabled = false
+    $scope.gearItemBeingEditedOriginal = null
     $scope.gearItemBeingEditedId = null
     $scope.gearItemBeingEdited = null
 
@@ -108,6 +117,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         # $scope.gearItemBeingEdited = gearItem.id
         $scope.gearItemBeingEdited = Restangular.copy gearItem
         $scope.gearItemBeingEditedId = $scope.gearItemBeingEdited.id
+        $scope.hideAddGearForm()
 
 
     $scope.cancelEditGearItem = ->
@@ -145,6 +155,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         # do it with regex!
         re = RegExp $scope.gearItemsSearchQuery
         return (not $scope.gearItemsSearchQuery) or re.test gearItem.name or re.test gearItem.description or re.test gearItem.location or re.test gearItem.weight.toString()
+
 
 
 
