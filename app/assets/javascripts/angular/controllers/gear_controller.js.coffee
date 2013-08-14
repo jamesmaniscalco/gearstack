@@ -100,7 +100,6 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     # editing things
     #$scope.editingGearItemEnabled = false
-    $scope.gearItemBeingEditedOriginal = null
     $scope.gearItemBeingEditedId = null
     $scope.gearItemBeingEdited = null
 
@@ -119,10 +118,17 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         $scope.gearItemBeingEditedId = $scope.gearItemBeingEdited.id
         $scope.hideAddGearForm()
 
-
-    $scope.cancelEditGearItem = ->
+    $scope.resetEditGearItem = ->
         $scope.gearItemBeingEdited = null
         $scope.gearItemBeingEditedId = null
+
+    $scope.cancelEditGearItem = ->
+        # check if there's actually an edit to cancel...
+        if $scope.gearItemBeingEditedId
+            $scope.gearItems = _.without $scope.gearItems, _.findWhere $scope.gearItems, {id: $scope.gearItemBeingEditedId}     # this is pretty ugly, but it works!
+            $scope.gearItems.push $scope.gearItemBeingEdited    # restore it from the copy we made
+        # then do this anyway
+        $scope.resetEditGearItem()
 
     # check if it's OK to do certain things
     $scope.okToEditGearItem = (gearItem) -> # disable if something is being edited already
@@ -210,10 +216,10 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         # remember we have an unedited copy in $scope.gearItemBeingEdited
         gearItem.put().then (data) ->
                 # if successful, we can just set editing mode off
-                $scope.cancelEditGearItem()
+                $scope.resetEditGearItem()  # this just sets things to null and keeps the changes.
             , (data) ->
                 # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
                 gearItem = Restangular.copy $scope.gearItemBeingEdited
                 alert gearItem.name + ' not updated (server communication error)'
-                $scope.cancelEditGearItem()
+                $scope.cancelEditGearItem() # this reverts any changes
   ]

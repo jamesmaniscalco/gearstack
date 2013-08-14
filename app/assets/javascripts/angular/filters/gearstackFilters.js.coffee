@@ -6,7 +6,7 @@ gearstackFilters.filter 'prettyStatus', () ->
             when 'onloan' then 'on loan'
             when 'checkedin' then 'checked in'
             when 'checkedout' then 'checked out'
-            else console.log 'error formatting pretty status!'
+            else console.log 'error formatting pretty status: ', input
 
 gearstackFilters.filter 'titleCase', () ->
     (input) ->
