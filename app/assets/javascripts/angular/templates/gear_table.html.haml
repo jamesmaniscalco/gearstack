@@ -1,8 +1,8 @@
 %div
   #gear-item-list-container
     %p
+      %span Search
       %input{:name => "gear_item_search", "ng-model" => "gearItemsSearchQuery"}
-      %span {{ gearItemsSearchQuery }}
     %form{:name => "gearForm", :novalidate => ""}
       %table
         %thead
@@ -51,6 +51,8 @@
               /%a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
           %tr#no-items{"ng-show" => 'gearItems.length == 0'}
             %td{:colspan => 6} No gear items yet.  Add some!
+          %tr#no-items-search{"ng-show" => 'gearItems.length != 0 && (gearItems | filter:gearItemsSearch).length == 0'}
+            %td{:colspan => 6} No gear items match your search.
           %tr#new-item
             %td{:colspan => 6}
               %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
