@@ -16,3 +16,15 @@ gearstackFilters.filter 'titleCase', () ->
             word = word[0].toUpperCase() + word[1..-1];
             wordsOut.push word
         return wordsOut.join(' ');
+
+gearstackFilters.filter 'inGearList', () ->
+    (gearItems, list_id) ->
+        return_array = []
+        if list_id
+            for gearItem in gearItems
+                if _.findWhere gearItem.gear_lists, {id: list_id}
+                    console.log gearItem
+                    return_array.push gearItem
+            return return_array
+        else
+            return gearItems

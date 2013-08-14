@@ -239,6 +239,12 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     # GEAR LISTS #
     ##############
 
-    
+    $scope.selectedListId = null
+
+    $scope.deselectGearList = ->
+        $scope.selectedListId = null
+
+    $scope.selectGearList = (gearList) ->
+        $scope.selectedListId = gearList.id
 
   ]

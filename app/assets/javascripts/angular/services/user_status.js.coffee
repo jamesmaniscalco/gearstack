@@ -24,7 +24,7 @@ App.factory 'UserStatus', ['$http', '$timeout', ($http, $timeout) ->
 
     # define our timeout function...
     updateUserStatus = () ->
-        $http.get('/api/v1/status').success (statusData) ->
+        $http.get('/api/v1/status.json').success (statusData) ->
             # update the variable and notify the observers
             this.userStatus = statusData
             notifyObservers()

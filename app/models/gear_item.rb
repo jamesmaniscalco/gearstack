@@ -4,6 +4,7 @@ class GearItem < ActiveRecord::Base
   #relations
   belongs_to :owner, :class_name => "User"
   belongs_to :possessor, :class_name => "User"
+  has_and_belongs_to_many :gear_lists
 
   #validations
   validates :name, :presence => true

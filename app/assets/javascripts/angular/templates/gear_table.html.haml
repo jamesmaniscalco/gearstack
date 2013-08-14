@@ -3,8 +3,12 @@
     #gear-list-container-header
       %span Gear Lists
     #gear-lists
-      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list"}
+      %div{"ng-click" => "deselectGearList()"}
+        %span All my items
+      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-click" => "selectGearList(gearList)"}
         %span {{ gearList.name }}
+    %input{"ng-model" => 'selectedListId', :type => "number"}
+    %span {{ selectedListId }}
 
   #gear-item-list-container
     %p
@@ -28,7 +32,7 @@
             / %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
             %td
               %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
               %span{"ng-show" => 'editingThisGearItem(gearItem)'}
