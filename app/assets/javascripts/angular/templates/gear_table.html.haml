@@ -18,7 +18,7 @@
             / %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
             %td
               %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
               %span{"ng-show" => 'editingThisGearItem(gearItem)'}
@@ -44,7 +44,7 @@
               %a{"ng-show" => "okToDeleteGearItem(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
               %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
               %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
-              %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
+              %button{"ng-show" => 'editingThisGearItem(gearItem)', "ng-disabled" => "editGearItemForm.$invalid", "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
               /%a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
           %tr#no-items{"ng-show" => 'gearItems.length == 0'}
             %td{:colspan => 6} No gear items yet.  Add some!
@@ -52,7 +52,7 @@
             %td{:colspan => 6}
               %a{"ng-click" => "showGearForm()", "ng-hide" => "gearFormVisible", :href => ""} Add new item...
               %a{"ng-click" => "hideGearForm()", "ng-show" => "gearFormVisible", :href => ""} cancel
-          %tr#gear_form_tr{"ng-show" => "gearFormVisible"}
+          %tr#gear_form_tr{"ng-show" => "gearFormVisible", "ng-form" => 'newGearItemForm'}
             %td
               %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
             %td
@@ -63,7 +63,7 @@
               %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
             %td checked in
             %td
-              %button{"ng-disabled" => "gearForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
+              %button{"ng-disabled" => "newGearItemForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
     %p
       %a{"ng-show" => "onLoanItemsVisible", "ng-click" => "hideOnLoanItems()", :href => ""} Hide items on loan
       %a{"ng-hide" => "onLoanItemsVisible", "ng-click" => "showOnLoanItems()", :href => ""} Show items on loan
