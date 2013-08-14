@@ -1,5 +1,8 @@
 %div
   #gear-item-list-container
+    %p
+      %input{:name => "gear_item_search", "ng-model" => "gearItemsSearchQuery"}
+      %span {{ gearItemsSearchQuery }}
     %form{:name => "gearForm", :novalidate => ""}
       %table
         %thead
@@ -18,7 +21,7 @@
             / %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
             %td
               %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
               %span{"ng-show" => 'editingThisGearItem(gearItem)'}
