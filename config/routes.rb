@@ -12,10 +12,12 @@ Gearstack::Application.routes.draw do
   namespace :api do
   	namespace :v1 do
   		resources :gear_items
+      resources :gear_lists
       match 'status', to: 'user_status#status', via: :get
   	end
   end
 
   # need this again so we get in-app functions like 'gear_item_url'
   resources :gear_items
+  resources :gear_lists
 end
