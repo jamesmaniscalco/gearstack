@@ -3,12 +3,16 @@
     #gear-list-container-header
       %span Gear Lists
     #gear-lists
-      %div{"ng-click" => "deselectGearList()"}
+      %div{"ng-click" => "deselectGearList()", "class" => "gear-list"}
         %span All my items
       %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-click" => "selectGearList(gearList)"}
         %span {{ gearList.name }}
-    %input{"ng-model" => 'selectedListId', :type => "number"}
-    %span {{ selectedListId }}
+      %div
+        %form{:name => "newGearListForm", :novalidate => ""}
+          %button{"ng-hide" => 'addingGearList', "ng-click" => 'showGearListForm()'} Create gear list
+          %input{"ng-show" => 'addingGearList', "ng-model" => 'newGearList.name'}
+          %button{:type => "submit", "ng-click" => 'addGearList()', "ng-show" => 'addingGearList'} Create
+          %button{"ng-show" => 'addingGearList', "ng-click" => 'hideGearListForm()'} Cancel
 
   #gear-item-list-container
     %p

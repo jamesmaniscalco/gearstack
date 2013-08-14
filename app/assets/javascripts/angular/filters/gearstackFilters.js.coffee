@@ -23,7 +23,6 @@ gearstackFilters.filter 'inGearList', () ->
         if list_id
             for gearItem in gearItems
                 if _.findWhere gearItem.gear_lists, {id: list_id}
-                    console.log gearItem
                     return_array.push gearItem
             return return_array
         else

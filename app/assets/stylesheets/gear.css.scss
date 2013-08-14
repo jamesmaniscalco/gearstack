@@ -60,6 +60,7 @@ tr.checkedout {
 }
 
 
+
 // gear list area formatting
 #gear-list-container {
     border: 1px solid black;
@@ -69,8 +70,12 @@ tr.checkedout {
 }
 
 .gear-list {
-    border: 1px solid black;
+    border-top: 1px solid black;
+    padding: 5px;
 }
+
+
+
 
 // sorting icons
 .up-sort-triangle {

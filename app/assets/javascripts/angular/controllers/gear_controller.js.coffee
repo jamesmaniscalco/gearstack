@@ -247,4 +247,22 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     $scope.selectGearList = (gearList) ->
         $scope.selectedListId = gearList.id
 
+
+    # creating, editing, and deleting gear lists
+    $scope.addingGearList = false
+
+    $scope.showGearListForm = ->
+        $scope.addingGearList = true
+
+    $scope.hideGearListForm = ->
+        $scope.addingGearList = false
+
+    $scope.addGearList = ->
+        GearLists.post($scope.newGearList).then (addedGearList) ->
+            $scope.gearLists.push addedGearList
+            $scope.hideGearListForm()
+            $scope.gearList = {}
+        , ->
+            console.log 'error creating gear list'
+
   ]
