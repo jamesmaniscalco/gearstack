@@ -3,9 +3,9 @@
     #gear-list-container-header
       %span Gear Lists
     #gear-lists
-      %div{"ng-click" => "deselectGearList()", "class" => "gear-list"}
+      %div{"ng-click" => "deselectGearList()", "class" => "gear-list", "ng-class" => 'noGearListSelectedClass()'}
         %span All my items
-      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-click" => "selectGearList(gearList)"}
+      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-click" => "selectGearList(gearList)"}
         %span {{ gearList.name }}
       %div
         %form{:name => "newGearListForm", :novalidate => ""}

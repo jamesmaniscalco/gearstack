@@ -247,6 +247,18 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     $scope.selectGearList = (gearList) ->
         $scope.selectedListId = gearList.id
 
+    $scope.gearListSelectedClass = (gearList) ->
+        if $scope.selectedListId == gearList.id
+            return 'selected-list'
+        else
+            return ''
+
+    $scope.noGearListSelectedClass = ->
+        if not $scope.selectedListId
+            return 'selected-list'
+        else
+            return ''
+
 
     # creating, editing, and deleting gear lists
     $scope.addingGearList = false
