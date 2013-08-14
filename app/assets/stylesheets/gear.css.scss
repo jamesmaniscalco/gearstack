@@ -59,6 +59,19 @@ tr.checkedout {
     background-color: $color-d-light;
 }
 
+
+// gear list area formatting
+#gear-list-container {
+    border: 1px solid black;
+    width: 200px;
+    padding: 5px;
+    border-collapse: collapse;
+}
+
+.gear-list {
+    border: 1px solid black;
+}
+
 // sorting icons
 .up-sort-triangle {
     display: inline-block;

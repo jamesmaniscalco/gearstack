@@ -19,6 +19,20 @@ App.config ["$routeProvider", ($routeProvider) ->
                             data: error
                         }
                     )
+        resolvedGearLists: (GearLists) ->
+            GearLists.getList().then(
+                    (gearLists) ->
+                        { 
+                            success: true,
+                            data: gearLists
+                        }
+                    ,
+                    (error) ->
+                        {
+                            success: false,
+                            data: error
+                        }
+                    )
       }
     ).otherwise redirectTo: "/"
   ]

@@ -1,6 +1,10 @@
 %div
   #gear-list-container
-  
+    #gear-list-container-header
+      %span Gear Lists
+    #gear-lists
+      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list"}
+        %span {{ gearList.name }}
 
   #gear-item-list-container
     %p

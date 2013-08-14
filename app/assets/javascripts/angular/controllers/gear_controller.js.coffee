@@ -1,8 +1,9 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangular', 'resolvedGearItems', 'GearItems', 'UserStatus', ($scope, $q, $http, $timeout, Restangular, resolvedGearItems, GearItems, UserStatus) ->
+App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangular', 'resolvedGearItems', 'resolvedGearLists', 'GearItems', 'GearLists', 'UserStatus', ($scope, $q, $http, $timeout, Restangular, resolvedGearItems, resolvedGearLists, GearItems, GearLists, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
-    if resolvedGearItems.status = true
+    if resolvedGearItems.success and resolvedGearLists.success
         $scope.gearItems = resolvedGearItems.data
+        $scope.gearLists = resolvedGearLists.data
     else
         console.log 'error'
         console.log resolvedGearItems.data
@@ -13,6 +14,14 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     # register the callback with User Status to keep it updated
     UserStatus.registerObserverCallback(updateUserStatus)
+
+
+
+    ##############
+    # GEAR ITEMS #
+    ##############
+
+
 
     # DOM manipulation
     $scope.addGearFormVisible = false
@@ -222,4 +231,14 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                 gearItem = Restangular.copy $scope.gearItemBeingEdited
                 alert gearItem.name + ' not updated (server communication error)'
                 $scope.cancelEditGearItem() # this reverts any changes
+
+
+
+
+    ##############
+    # GEAR LISTS #
+    ##############
+
+    
+
   ]
