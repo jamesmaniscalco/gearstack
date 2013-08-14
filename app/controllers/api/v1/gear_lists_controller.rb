@@ -12,7 +12,8 @@ module Api
 
 
       def index
-        @gear_lists = GearList.all()
+        #@gear_lists = GearList.where(:user_id => current_user.id)
+        @gear_lists = current_user.gear_lists
         # render json: @gear_lists
       end
 

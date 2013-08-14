@@ -11,4 +11,5 @@ class User < ActiveRecord::Base
 
   has_many :gear_items_owned, :class_name => 'GearItem', :foreign_key => 'owner_id'
   has_many :gear_items_possessed, :class_name => 'GearItem', :foreign_key => 'possessor_id'
+  has_many :gear_lists
 end
