@@ -264,12 +264,52 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     # creating, editing, and deleting gear lists
     $scope.addingGearList = false
 
-    $scope.showGearListForm = ->
+    $scope.showAddGearListForm = ->
         $scope.addingGearList = true
 
-    $scope.hideGearListForm = ->
+    $scope.hideAddGearListForm = ->
         $scope.addingGearList = false
         $scope.newGearList = {}
+
+    # editing:
+    $scope.gearListBeingEditedId = null
+    $scope.gearListBeingEdited = null
+
+    # are we editing a given list?
+    $scope.editingThisGearList = (gearList) ->
+        if $scope.gearListBeingEditedId == gearList.id
+            true
+        else
+            false
+
+    # set it to edit!
+    $scope.editGearList = (gearList) ->
+        $scope.gearListBeingEdited = Restangular.copy gearList
+        $scope.gearListBeingEditedId = $scope.gearListBeingEdited.id
+        $scope.hideAddGearListForm()
+
+    $scope.resetEditGearList = ->
+        $scope.gearListBeingEdited = null
+        $scope.gearListBeingEditedId = null
+
+    $scope.cancelEditGearList = ->
+        # check if there's actually an edit to cancel...
+        if $scope.gearListBeingEditedId
+            $scope.gearLists = _.without $scope.gearLists, _.findWhere $scope.gearLists, {id: $scope.gearListBeingEditedId}     # this is pretty ugly, but it works!
+            $scope.gearLists.push $scope.gearListBeingEdited    # restore it from the copy we made
+        # then do this anyway
+        $scope.resetEditGearList()
+
+
+
+    $scope.okToEditGearList = (gearList) -> # disable if something is being edited already
+        if (not $scope.gearListBeingEditedId) and ($scope.gearListBeingEditedId != gearList.id)
+            true
+        else
+            false
+
+
+
 
 
     $scope.addGearList = ->
@@ -280,7 +320,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
             console.log 'error creating gear list'
 
     $scope.okToDeleteGearList = (gearList) ->
-        if not $scope.gearItemBeingEditedId
+        if not $scope.gearListBeingEditedId
             return true
         else
             return false
@@ -302,5 +342,18 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                 , ->
                     # if it wasn't, do an alert (TODO: make this nicer later!)
                     alert gearList.name + ' not deleted (server communication error)'
+
+    $scope.updateGearList = (gearList) ->
+        # remember we have an unedited copy in $scope.gearItemBeingEdited
+        gearList.put().then (data) ->
+                # if successful, we can just set editing mode off
+                $scope.resetEditGearList()  # this just sets things to null and keeps the changes.
+            , (data) ->
+                # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
+                gearList = Restangular.copy $scope.gearListBeingEdited
+                alert gearList.name + ' not updated (server communication error)'
+                $scope.cancelEditGearList() # this reverts any changes
+
+
 
   ]

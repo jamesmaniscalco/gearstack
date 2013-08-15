@@ -5,15 +5,20 @@
     #gear-lists
       %div{"ng-click" => "deselectGearList()", "class" => "gear-list", "ng-class" => 'noGearListSelectedClass()'}
         %span All my items
-      %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-click" => "selectGearList(gearList)"}
-        %span {{ gearList.name }}
-        %button{"ng-disabled" => "!okToDeleteGearList(gearList)", "ng-click" => 'removeGearList(gearList)', :href => "" } del 
+      %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm'}
+        %span{"ng-hide" => 'editingThisGearList(gearList)', "ng-click" => "selectGearList(gearList)"} {{ gearList.name }}
+        %span{"ng-show" => 'editingThisGearList(gearList)'}
+          %input{:name => "name", "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string"}
+        %button{"ng-show" => 'okToEditGearList(gearList)', "ng-click" => 'editGearList(gearList)', :href => "" } edit
+        %button{"ng-show" => 'editingThisGearList(gearList)', "ng-disabled" => "editGearListForm.$invalid", "ng-click" => 'updateGearList(gearList)', :href => "" } save
+        %button{"ng-show" => 'editingThisGearList(gearList)', "ng-click" => 'cancelEditGearList()', :href => "" } cancel
+        %button{"ng-disabled" => "!okToDeleteGearList(gearList)", "ng-click" => 'removeGearList(gearList)', :href => "" } del
       %div
         %form{:name => "newGearListForm", :novalidate => ""}
-          %button{"ng-hide" => 'addingGearList', "ng-click" => 'showGearListForm()'} Create gear list
+          %button{"ng-hide" => 'addingGearList', "ng-click" => 'showAddGearListForm()'} Create gear list
           %input{"ng-show" => 'addingGearList', "ng-model" => 'newGearList.name', :required => "", :type => "string"}
           %button{"ng-click" => 'addGearList()', "ng-show" => 'addingGearList', "ng-disabled" => "newGearListForm.$invalid", :type => "submit"} Create
-          %button{"ng-show" => 'addingGearList', "ng-click" => 'hideGearListForm()'} Cancel
+          %button{"ng-show" => 'addingGearList', "ng-click" => 'hideAddGearListForm()'} Cancel
 
   #gear-item-list-container
     %p
@@ -27,14 +32,6 @@
               %span {{heading | titleCase}}
               %span{"class" => 'down-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "forward")'}
               %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "reverse")'}
-            / %th{"ng-click" => 'setGearTableOrder("name")'}
-            /   %span Name
-            /   %span{"class" => 'down-sort-triangle', "ng-show" => 'showGearTableSortIcon("name", "forward")'}
-            /   %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon("name", "reverse")'}
-            / %th{"ng-click" => 'setGearTableOrder("description")'} Description
-            / %th{"ng-click" => 'setGearTableOrder("location")'} Location
-            / %th{"ng-click" => 'setGearTableOrder("weight")'} Weight
-            / %th{"ng-click" => 'setGearTableOrder("status")'} Status
             %th Actions
         %tbody
           %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
