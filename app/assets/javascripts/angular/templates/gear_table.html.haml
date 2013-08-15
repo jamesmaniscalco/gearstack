@@ -7,11 +7,12 @@
         %span All my items
       %div{"ng-repeat" => 'gearList in gearLists', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-click" => "selectGearList(gearList)"}
         %span {{ gearList.name }}
+        %button{"ng-disabled" => "!okToDeleteGearList(gearList)", "ng-click" => 'removeGearList(gearList)', :href => "" } del 
       %div
         %form{:name => "newGearListForm", :novalidate => ""}
           %button{"ng-hide" => 'addingGearList', "ng-click" => 'showGearListForm()'} Create gear list
-          %input{"ng-show" => 'addingGearList', "ng-model" => 'newGearList.name'}
-          %button{:type => "submit", "ng-click" => 'addGearList()', "ng-show" => 'addingGearList'} Create
+          %input{"ng-show" => 'addingGearList', "ng-model" => 'newGearList.name', :required => "", :type => "string"}
+          %button{"ng-click" => 'addGearList()', "ng-show" => 'addingGearList', "ng-disabled" => "newGearListForm.$invalid", :type => "submit"} Create
           %button{"ng-show" => 'addingGearList', "ng-click" => 'hideGearListForm()'} Cancel
 
   #gear-item-list-container

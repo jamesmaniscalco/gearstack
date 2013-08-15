@@ -177,6 +177,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     # controller functions
     $scope.refreshGearItems = ->
         $scope.gearItems = GearItems.getList()
+        console.log $scope.gearItems
 
     $scope.addGearItem = ->
         # post gear item to server
@@ -268,13 +269,38 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     $scope.hideGearListForm = ->
         $scope.addingGearList = false
+        $scope.newGearList = {}
+
 
     $scope.addGearList = ->
         GearLists.post($scope.newGearList).then (addedGearList) ->
             $scope.gearLists.push addedGearList
             $scope.hideGearListForm()
-            $scope.gearList = {}
         , ->
             console.log 'error creating gear list'
+
+    $scope.okToDeleteGearList = (gearList) ->
+        if not $scope.gearItemBeingEditedId
+            return true
+        else
+            return false
+
+    $scope.removeGearList = (gearList) ->
+        confirmText =  'Are you sure you want to delete "' + gearList.name + '" from your library?'
+        deleteGearList = confirm confirmText
+
+        if deleteGearList
+            gearList.remove().then ->
+                    # if delete was successful on server, remove from the scope
+                    $scope.gearLists = _.without $scope.gearLists, gearList
+                    # then adjust each gear item so that the deleted gear list is taken out
+                    _.each $scope.gearItems, (gearItem) ->
+                        gearItem.gear_lists = _.reject gearItem.gear_lists, (gearItemGearList) ->
+                            return (gearItemGearList.id == gearList.id)
+                    $scope.deselectGearList()   # because clicking the button probably sent an ng-click to select a list
+
+                , ->
+                    # if it wasn't, do an alert (TODO: make this nicer later!)
+                    alert gearList.name + ' not deleted (server communication error)'
 
   ]
