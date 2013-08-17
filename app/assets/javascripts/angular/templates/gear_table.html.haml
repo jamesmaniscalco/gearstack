@@ -1,14 +1,13 @@
-%div
-  #gear-list-container
+%div{:class => "row-fluid"}
+  %div{:id => "gear-list-container", :class => "span2"}
     #gear-list-container-header
       %span Gear Lists
     #gear-lists
       %div{"ng-click" => "deselectGearList()", "class" => "gear-list", "ng-class" => 'noGearListSelectedClass()'}
         %span All my items
-      %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm', "data-drag" => 'true', "jqyoui-draggable" => '{placeholder:true, animate:true}', "data-jqyoui-options" => '{revert: "invalid"}'}
+      %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm'}
         %span{"ng-hide" => 'editingThisGearList(gearList)', "ng-click" => "selectGearList(gearList)"} {{ gearList.name }}
-        %span{"ng-show" => 'editingThisGearList(gearList)'}
-          %input{:name => "name", "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string"}
+        %input{:name => "name", "ng-show" => 'editingThisGearList(gearList)', "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string", :class => "input-block-level"}
         %button{"ng-show" => 'okToEditGearList(gearList)', "ng-click" => 'editGearList(gearList)', :href => "" } edit
         %button{"ng-show" => 'editingThisGearList(gearList)', "ng-disabled" => "editGearListForm.$invalid", "ng-click" => 'updateGearList(gearList)', :href => "" } save
         %button{"ng-show" => 'editingThisGearList(gearList)', "ng-click" => 'cancelEditGearList()', :href => "" } cancel
@@ -20,73 +19,66 @@
           %button{"ng-click" => 'addGearList()', "ng-show" => 'addingGearList', "ng-disabled" => "newGearListForm.$invalid", :type => "submit"} Create
           %button{"ng-show" => 'addingGearList', "ng-click" => 'hideAddGearListForm()'} Cancel
 
-  #gear-item-list-container
-    %p
-      %span Search
-      %input{:name => "gear_item_search", "ng-model" => "gearItemsSearchQuery"}
+  %div{:id => "gear-item-list-container", :class => "span10"}
     %form{:name => "gearForm", :novalidate => ""}
-      %table
-        %thead
-          %tr
-            %th{"ng-repeat" => 'heading in gearTableHeadings', "ng-click" => 'setGearTableOrder(heading)'}
-              %span {{heading | titleCase}}
-              %span{"class" => 'down-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "forward")'}
-              %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "reverse")'}
-            %th Actions
-        %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm', "data-drag" => 'true', "jqyoui-draggable" => '{placeholder:true, animate:true}', "data-jqyoui-options" => '{revert: "invalid"}'}
-            %td
-              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
-              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
-                %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
-            %td
-              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.description}}
-              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
-                %input{:name => "description", "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string"}
-            %td
-              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
-              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
-                %input{:name => "location", "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string"}
-            %td{:align => 'right'}
-              %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight}}
-              %span{"ng-show" => 'editingThisGearItem(gearItem)'}
-                %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
+      %div
+        %div{:class => "gear-item-table-header row-fluid"}
+          %div{"ng-repeat" => 'heading in gearTableHeadings', "ng-click" => "setGearTableOrder(heading.title)", :class => "{{heading.class}}"}
+            %strong {{heading.title | titleCase}}
+            %i{"class" => 'icon-chevron-down', "ng-show" => 'showGearTableSortIcon(heading.title, "forward")'}
+            %i{"class" => 'icon-chevron-up', "ng-show" => 'showGearTableSortIcon(heading.title, "reverse")'}
+          %div{:class => "span2"}
+            %input{:name => "gear_item_search", "ng-model" => "gearItemsSearchQuery", :placeholder => "Search...", :class => "input-block-level"}
 
-            %td
-              %span {{gearItem.status | prettyStatus}}
-            %td
-              %a{"ng-show" => "okToCheckOutItem(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
-              %a{"ng-show" => "okToCheckInItem(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
-              %a{"ng-show" => "okToDeleteGearItem(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
-              %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
-              %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
-              %button{"ng-show" => 'editingThisGearItem(gearItem)', "ng-disabled" => "editGearItemForm.$invalid", "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
-              /%a{"ng-show" => 'editingThisGearItem(gearItem)', :href => "" } save item
-          %tr#no-items{"ng-show" => 'gearItems.length == 0'}
-            %td{:colspan => 6} No gear items yet.  Add some!
-          %tr#no-items-search{"ng-show" => 'gearItems.length != 0 && (gearItems | filter:gearItemsSearch).length == 0'}
-            %td{:colspan => 6} No gear items match your search.
-          %tr#new-item
-            %td{:colspan => 6}
-              %button{"ng-click" => "showAddGearForm()", "ng-hide" => "addGearFormVisible", "ng-disabled" => '!okToAddGearItem()', :href => ""} Add new item...
-              %button{"ng-click" => "hideAddGearForm()", "ng-show" => "addGearFormVisible", :href => ""} cancel
-          %tr#gear_form_tr{"ng-show" => "addGearFormVisible", "ng-form" => 'newGearItemForm'}
-            %td
-              %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string"}
-            %td
-              %input{:name => "description", "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string"}
-            %td
-              %input{:name => "location", "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string"}
-            %td
-              %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => ""}
-            %td checked in
-            %td
-              %button{"ng-disabled" => "newGearItemForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
+        %div{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm', :class => "row-fluid"}
+          %div{:class => "span3"}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
+            %input{:name => "name", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string", :class => "input-block-level"}
+          %div{:class => "span2"}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.description}}
+            %input{:name => "description", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string", :class => "input-block-level"}
+          %div{:class => "span2"}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
+            %input{:name => "location", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string", :class => "input-block-level"}
+          %div{:class => "span1 text-right"}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight}}
+            %input{:name => "weight", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => "", :class => "input-block-level"}
+          %div{:class => "span2"}
+            %span {{gearItem.status | prettyStatus}}
+          %div{:class => "span2"}
+            %a{"ng-show" => "okToCheckOutItem(gearItem)", "ng-click" => 'checkOutGearItem(gearItem)', :href => "" } check out
+            %a{"ng-show" => "okToCheckInItem(gearItem)", "ng-click" => "checkInGearItem(gearItem)", :href => "" } check in
+            %a{"ng-show" => "okToDeleteGearItem(gearItem)", "ng-click" => 'removeGearItem(gearItem)', :href => "" } delete item
+            %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
+            %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
+            %button{"ng-show" => 'editingThisGearItem(gearItem)', "ng-disabled" => "editGearItemForm.$invalid", "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
+
+        %div{:id => 'no-items', "ng-show" => 'gearItems.length == 0', :class => "row-fluid"}
+          %div No gear items yet.  Add some!
+
+        %div{:id => 'no-items-search', "ng-show" => 'gearItems.length != 0 && (gearItems | filter:gearItemsSearch).length == 0', :class => "row-fluid"}
+          %div No gear items match your search.
+
+        %div{:id => 'new-item', :class => "row-fluid"}
+          %div
+            %button{"ng-click" => "showAddGearForm()", "ng-hide" => "addGearFormVisible", "ng-disabled" => '!okToAddGearItem()', :href => ""} Add new item...
+            %button{"ng-click" => "hideAddGearForm()", "ng-show" => "addGearFormVisible", :href => ""} cancel
+
+        %div{:id =>'gear-form-row', "ng-show" => "addGearFormVisible", "ng-form" => 'newGearItemForm', :class => "row-fluid"}
+          %div{:class => "span3"}
+            %input{:name => "name", "ng-model" => "gearItem.name", :placeholder => "name (required)", :required => "", :type => "string", :class => "input-block-level"}
+          %div{:class => "span2"}
+            %input{:name => "description", "ng-model" => "gearItem.description", :placeholder => "description", :type => "string", :class => "input-block-level"}
+          %div{:class => "span2"}
+            %input{:name => "location", "ng-model" => "gearItem.location", :placeholder => "location", :type => "string", :class => "input-block-level"}
+          %div{:class => "span1"}
+            %input{:name => "weight", "ng-model" => "gearItem.weight", :placeholder => "weight", :type => "text", :smart_float => "", :class => "input-block-level"}
+          %div{:class => "span2"} checked in
+          %div{:class => "span2"}
+            %button{"ng-disabled" => "newGearItemForm.$invalid", "ng-click" => "addGearItem()", :type => "submit"} save item
     %p
       %a{"ng-show" => "onLoanItemsVisible", "ng-click" => "hideOnLoanItems()", :href => ""} Hide items on loan
       %a{"ng-hide" => "onLoanItemsVisible", "ng-click" => "showOnLoanItems()", :href => ""} Show items on loan
 
     %p
       %button{"ng-click" => "refreshGearItems()"} refresh gear items
-
-%div{"class" => "gear-list selected-list", "data-drag" => "true", "jqyoui-draggable" => "{placeholder:true, animate:true}", "data-jqyoui-options" => '{revert: "invalid"}'} hello there

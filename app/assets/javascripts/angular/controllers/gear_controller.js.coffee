@@ -100,11 +100,11 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     #dynamically load table headers
     $scope.gearTableHeadings = [
-        'name',
-        'description',
-        'location',
-        'weight',
-        'status'
+        {title: 'name', class: 'span3'},
+        {title: 'description', class: 'span2'},
+        {title: 'location', class: 'span2'},
+        {title: 'weight', class: 'span1'},
+        {title: 'status', class: 'span2'}
     ]
 
     # editing things
@@ -354,6 +354,14 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                 alert gearList.name + ' not updated (server communication error)'
                 $scope.cancelEditGearList() # this reverts any changes
 
+
+
+    #######################
+    # GEAR ITEMS IN LISTS #
+    #######################
+
+    $scope.dropGearItem = () ->
+        console.log 'gear item dropped'
 
 
   ]

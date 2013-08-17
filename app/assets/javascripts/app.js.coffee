@@ -1,4 +1,4 @@
-window.App = angular.module('Gearstack', ['ngResource', 'restangular', 'gearstackFilters', 'ngDragDrop'])
+window.App = angular.module('Gearstack', ['ngResource', 'restangular', 'gearstackFilters', 'ui.bootstrap'])
 
 App.config ["$routeProvider", ($routeProvider) ->
     $routeProvider.when("/",
