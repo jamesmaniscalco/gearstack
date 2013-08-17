@@ -360,8 +360,21 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     # GEAR ITEMS IN LISTS #
     #######################
 
-    $scope.dropGearItem = () ->
-        console.log 'gear item dropped'
+    $scope.removableGearLists = (gearItem) ->
+        removableGearLists = []
+        # run through each gear list associated with the item,
+        for list in gearItem.gear_lists
+            # and add that to the list.  use concat because .where gives an array.
+            removableGearLists.push _.findWhere $scope.gearLists, {id: list.id}
+        console.log gearItem.id, removableGearLists
+        return removableGearLists
+
+    $scope.addableGearLists = (gearItem) ->
+        # start with the removable lists,
+        removableGearLists = $scope.removableGearLists(gearItem)
+        # and take the other ones.
+        addableGearLists = _.difference $scope.gearLists, removableGearLists
+        return addableGearLists
 
 
   ]
