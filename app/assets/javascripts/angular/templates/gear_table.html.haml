@@ -5,7 +5,7 @@
     #gear-lists
       %div{"ng-click" => "deselectGearList()", "class" => "gear-list", "ng-class" => 'noGearListSelectedClass()'}
         %span All my items
-      %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm', "data-drag" => 'true', "jqyoui-draggable" => '{placeholder:true, animate:true}', "data-jqyoui-options" => '{revert: "invalid"}'}
+      %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm'}
         %span{"ng-hide" => 'editingThisGearList(gearList)', "ng-click" => "selectGearList(gearList)"} {{ gearList.name }}
         %span{"ng-show" => 'editingThisGearList(gearList)'}
           %input{:name => "name", "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string"}
@@ -34,7 +34,7 @@
               %span{"class" => 'up-sort-triangle', "ng-show" => 'showGearTableSortIcon(heading, "reverse")'}
             %th Actions
         %tbody
-          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm', "data-drag" => 'true', "jqyoui-draggable" => '{placeholder:true, animate:true}', "data-jqyoui-options" => '{revert: "invalid"}'}
+          %tr{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm'}
             %td
               %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
               %span{"ng-show" => 'editingThisGearItem(gearItem)'}
