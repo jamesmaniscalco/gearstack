@@ -5,7 +5,7 @@ App.config ["$routeProvider", ($routeProvider) ->
         templateUrl: "/assets/angular/templates/gear_table.html"
         controller: "GearController"
         resolve: {
-            resolvedGearItems: (GearItems) ->
+            resolvedGearItems: ['GearItems', (GearItems) ->
                 GearItems.getList().then(
                         (gearItemList) ->
                             { 
@@ -19,7 +19,8 @@ App.config ["$routeProvider", ($routeProvider) ->
                                 data: error
                             }
                         )
-            resolvedGearLists: (GearLists) ->
+            ]
+            resolvedGearLists: ['GearLists', (GearLists) ->
                 GearLists.getList().then(
                         (gearLists) ->
                             { 
@@ -33,6 +34,7 @@ App.config ["$routeProvider", ($routeProvider) ->
                                 data: error
                             }
                         )
+            ]
         }
     ).otherwise redirectTo: "/"
 ]
