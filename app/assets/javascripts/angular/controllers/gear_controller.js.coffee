@@ -169,7 +169,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     $scope.gearItemsSearch = (gearItem) ->
         # do it with regex!
         re = RegExp $scope.gearItemsSearchQuery
-        return (not $scope.gearItemsSearchQuery) or re.test gearItem.name or re.test gearItem.description or re.test gearItem.location or re.test gearItem.weight.toString()
+        return (not $scope.gearItemsSearchQuery) or re.test(gearItem.name) or re.test(gearItem.description) or re.test(gearItem.location) or re.test(gearItem.weight)
 
 
 
