@@ -41,6 +41,7 @@ App.config ["$routeProvider", ($routeProvider) ->
   
 App.config ['RestangularProvider', (RestangularProvider) ->
     RestangularProvider.setBaseUrl("/api/v1")
+]
 
 # configure app to add X-CSRF-Token to headers to make Rails happy
 # also delete the X-Requested-With header to help keep API requests from dying
