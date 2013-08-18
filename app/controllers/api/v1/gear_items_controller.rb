@@ -42,6 +42,13 @@ module Api
         # first, assign the attributes (without saving)
         @gear_item.assign_attributes(params[:gear_item])
 
+        # # and get the gear lists too
+        @gear_item.gear_lists = []
+        params[:gear_lists].each do |list|
+          @gear_item.gear_lists << GearList.find(list[:id])
+        end
+
+
         # check that the user has permissions to do the update:
 
         # if they're changing the status, check that they possess it

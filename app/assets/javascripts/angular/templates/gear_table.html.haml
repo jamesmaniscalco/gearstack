@@ -52,18 +52,18 @@
             %a{"ng-show" => 'okToEditGearItem(gearItem)', "ng-click" => 'editGearItem(gearItem)', :href => "" } edit item
             %a{"ng-show" => 'editingThisGearItem(gearItem)', "ng-click" => 'cancelEditGearItem()', :href => "" } cancel edit
             %button{"ng-show" => 'editingThisGearItem(gearItem)', "ng-disabled" => "editGearItemForm.$invalid", "ng-click" => 'updateGearItem(gearItem)', :href => "" } save item
-            %div{:class => "dropdown"}
+            %div{:class => "dropdown", "ng-show" => "okToAddOrRemoveGearLists(gearItem)"}
               %a{:class => "dropdown-toggle"} gear lists
               %ul{:class => "dropdown-menu pull-right"}
                 %li{:class => "disabled", "ng-show" => "gearItem.gear_lists.length < gearLists.length"}
                   %a{:href => ""} add to...
-                %li{"ng-repeat" => "gearList in addableGearLists(gearItem)"}
-                  %a{:href => ""} {{ gearList.name }}
+                %li{"ng-repeat" => 'gearList in addableGearLists(gearItem) | orderBy:"name"'}
+                  %a{:href => "", "ng-click" => "addToGearList(gearItem, gearList)"} {{ gearList.name }}
                 %li{:class => "divider", "ng-show" => "gearItem.gear_lists.length < gearLists.length && gearItem.gear_lists.length > 0"}
                 %li{:class => "disabled", "ng-show" => "gearItem.gear_lists.length > 0"}
                   %a{:href => ""} remove from...
-                %li{"ng-repeat" => "gearList in removableGearLists(gearItem)"}
-                  %a{:href => ""} {{ gearList.name }}
+                %li{"ng-repeat" => 'gearList in removableGearLists(gearItem) | orderBy:"name"'}
+                  %a{:href => "", "ng-click" => "removeFromGearList(gearItem, gearList)"} {{ gearList.name }}
 
         %div{:id => 'no-items', "ng-show" => 'gearItems.length == 0', :class => "row-fluid"}
           %div No gear items yet.  Add some!
