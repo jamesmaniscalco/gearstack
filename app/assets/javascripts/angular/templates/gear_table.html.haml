@@ -7,7 +7,7 @@
         %span All my items
       %div{"ng-repeat" => 'gearList in gearLists | orderBy:"name"', "class" => "gear-list", "ng-class" => 'gearListSelectedClass(gearList)', "ng-form" => 'editGearListForm'}
         %span{"ng-hide" => 'editingThisGearList(gearList)', "ng-click" => "selectGearList(gearList)"} {{ gearList.name }}
-        %input{:name => "name", "ng-show" => 'editingThisGearList(gearList)', "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string", :class => "input-block-level"}
+        %input{:name => "name", "ng-show" => 'editingThisGearList(gearList)', "ng-model" => "gearList.name", :placeholder => "name (required)", :required => "", :type => "string", :class => "input-block-level", "model-change-blur" => ""}
         %button{"ng-show" => 'okToEditGearList(gearList)', "ng-click" => 'editGearList(gearList)', :href => "" } edit
         %button{"ng-show" => 'editingThisGearList(gearList)', "ng-disabled" => "editGearListForm.$invalid", "ng-click" => 'updateGearList(gearList)', :href => "" } save
         %button{"ng-show" => 'editingThisGearList(gearList)', "ng-click" => 'cancelEditGearList()', :href => "" } cancel
@@ -33,16 +33,16 @@
         %div{"ng-repeat" => 'gearItem in gearItems | filter:gearItemsSearch | inGearList:selectedListId | orderBy:[gearTableOrder, "name"]', "ng-class" =>'gearItem.status', "ng-show" => 'gearItemVisible(gearItem)', "ng-form" => 'editGearItemForm', :class => "row-fluid"}
           %div{:class => "span3"}
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.name}}
-            %input{:name => "name", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string", :class => "input-block-level"}
+            %input{:name => "name", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.name", :placeholder => "item name (required)", :required => "", :type => "string", :class => "input-block-level", "model-change-blur" => ""}
           %div{:class => "span2"}
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.description}}
-            %input{:name => "description", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string", :class => "input-block-level"}
+            %input{:name => "description", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.description", :placeholder => "item description", :type => "string", :class => "input-block-level", "model-change-blur" => ""}
           %div{:class => "span2"}
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
-            %input{:name => "location", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string", :class => "input-block-level"}
+            %input{:name => "location", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.location", :placeholder => "item location", :type => "string", :class => "input-block-level", "model-change-blur" => ""}
           %div{:class => "span1 text-right"}
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight}}
-            %input{:name => "weight", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => "", :class => "input-block-level"}
+            %input{:name => "weight", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItem.weight", :placeholder => "item weight", :type => "text", :smart_float => "", :class => "input-block-level", "model-change-blur" => ""}
           %div{:class => "span2"}
             %span {{gearItem.status | prettyStatus}}
           %div{:class => "span2"}
