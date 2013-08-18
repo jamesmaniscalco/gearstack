@@ -31,8 +31,17 @@ module Api
         @gear_item.status = 'checkedin'  # set the status to be checked in by default
         @gear_item.owner = current_user  # and set the owner and possessor to be the current user.
         @gear_item.possessor = current_user
+
+        # get the gear list information, if it's there
+        @gear_item.gear_lists = []
+        if params[:gear_lists]
+          params[:gear_lists].each do |list|
+            @gear_item.gear_lists << GearList.find(list[:id])
+          end
+        end
+
         if @gear_item.save
-          render json: @gear_item, status: :created, location: @gear_item
+          render 'api/v1/gear_items/show', status: :created, location: @gear_item
         else
           render json: @gear_item.errors, status: :unprocessable_entity
         end
@@ -44,8 +53,10 @@ module Api
 
         # # and get the gear lists too
         @gear_item.gear_lists = []
-        params[:gear_lists].each do |list|
-          @gear_item.gear_lists << GearList.find(list[:id])
+        if params[:gear_lists]
+          params[:gear_lists].each do |list|
+            @gear_item.gear_lists << GearList.find(list[:id])
+          end
         end
 
 

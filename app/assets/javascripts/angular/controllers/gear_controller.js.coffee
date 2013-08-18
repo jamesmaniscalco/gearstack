@@ -180,13 +180,15 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         console.log $scope.gearItems
 
     $scope.addGearItem = ->
+        # check if a gear list is selected
+        if $scope.selectedListId
+            $scope.gearItem.gear_lists = [{id: $scope.selectedListId}]
         # post gear item to server
         GearItems.post($scope.gearItem).then (addedGearItem) ->
             # push the new item into the table
             $scope.gearItems.push addedGearItem
-            # $scope.refreshGearItems()
             # if it works, hide the form (Should this go in a separate file?  A directive?)
-            $scope.hideGearForm()
+            $scope.hideAddGearForm()
             # then delete object from the scope
             $scope.gearItem = {}
         , ->
