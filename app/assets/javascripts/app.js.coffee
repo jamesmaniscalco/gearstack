@@ -2,40 +2,40 @@ window.App = angular.module('Gearstack', ['ngResource', 'restangular', 'gearstac
 
 App.config ["$routeProvider", ($routeProvider) ->
     $routeProvider.when("/",
-      templateUrl: "/assets/angular/templates/gear_table.html"
-      controller: "GearController"
-      resolve: {
-        resolvedGearItems: (GearItems) ->
-            GearItems.getList().then(
-                    (gearItemList) ->
-                        { 
-                            success: true,
-                            data: gearItemList
-                        }
-                    ,
-                    (error) ->
-                        {
-                            success: false,
-                            data: error
-                        }
-                    )
-        resolvedGearLists: (GearLists) ->
-            GearLists.getList().then(
-                    (gearLists) ->
-                        { 
-                            success: true,
-                            data: gearLists
-                        }
-                    ,
-                    (error) ->
-                        {
-                            success: false,
-                            data: error
-                        }
-                    )
-      }
+        templateUrl: "/assets/angular/templates/gear_table.html"
+        controller: "GearController"
+        resolve: {
+            resolvedGearItems: (GearItems) ->
+                GearItems.getList().then(
+                        (gearItemList) ->
+                            { 
+                                success: true,
+                                data: gearItemList
+                            }
+                        ,
+                        (error) ->
+                            {
+                                success: false,
+                                data: error
+                            }
+                        )
+            resolvedGearLists: (GearLists) ->
+                GearLists.getList().then(
+                        (gearLists) ->
+                            { 
+                                success: true,
+                                data: gearLists
+                            }
+                        ,
+                        (error) ->
+                            {
+                                success: false,
+                                data: error
+                            }
+                        )
+        }
     ).otherwise redirectTo: "/"
-  ]
+]
   
 App.config (RestangularProvider) ->
     RestangularProvider.setBaseUrl("/api/v1")
