@@ -100,11 +100,11 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
 
     #dynamically load table headers
     $scope.gearTableHeadings = [
-        'name',
-        'description',
-        'location',
-        'weight',
-        'status'
+        {title: 'name', class: 'span3'},
+        {title: 'description', class: 'span2'},
+        {title: 'location', class: 'span2'},
+        {title: 'weight', class: 'span1'},
+        {title: 'status', class: 'span2'}
     ]
 
     # editing things
@@ -355,5 +355,62 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                 $scope.cancelEditGearList() # this reverts any changes
 
 
+
+    #######################
+    # GEAR ITEMS IN LISTS #
+    #######################
+
+    $scope.removableGearLists = (gearItem) ->
+        removableGearLists = []
+        # run through each gear list associated with the item,
+        for list in gearItem.gear_lists
+            # and add that to the list.  use concat because .where gives an array.
+            removableGearLists.push _.findWhere $scope.gearLists, {id: list.id}
+        return removableGearLists
+
+    $scope.addableGearLists = (gearItem) ->
+        # start with the removable lists,
+        removableGearLists = $scope.removableGearLists(gearItem)
+        # and take the other ones.
+        addableGearLists = _.difference $scope.gearLists, removableGearLists
+        return addableGearLists
+
+    # this is pretty much the same as okToDeleteGearItem
+    $scope.okToAddOrRemoveGearLists = (gearItem) -> # disable if something is being edited
+        if (not $scope.gearItemBeingEditedId) and ($scope.itemIsPossessedByCurrentUser(gearItem) and $scope.itemBelongsToCurrentUser(gearItem))
+            true
+        else
+            false
+
+    $scope.gearItemCopy = null
+
+    $scope.addToGearList = (gearItem, gearList) ->
+        # first add the list
+        $scope.gearItemCopy = Restangular.copy gearItem    # save a copy
+        gearItem.gear_lists.push {id: gearList.id}
+        # then save to the server
+        gearItem.put().then (data) ->
+                # if this works, then cool!
+                {}  # do nothing
+            , (data) ->
+                # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
+                gearItem.gear_lists = $scope.gearItemCopy.gear_lists
+                $scope.gearItemCopy = null
+                alert gearItem.name + ' not updated (server communication error)'
+
+    $scope.removeFromGearList = (gearItem, gearList) ->
+        # first add the list
+        $scope.gearItemCopy = Restangular.copy gearItem    # save a copy
+        gearItem.gear_lists = _.reject gearItem.gear_lists, (gearItemGearList) ->
+                return (gearItemGearList.id == gearList.id)
+        # then save to the server
+        gearItem.put().then (data) ->
+                # if this works, then cool!
+                {}  # do nothing
+            , (data) ->
+                # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
+                gearItem.gear_lists = $scope.gearItemCopy.gear_lists
+                $scope.gearItemCopy = null
+                alert gearItem.name + ' not updated (server communication error)'
 
   ]

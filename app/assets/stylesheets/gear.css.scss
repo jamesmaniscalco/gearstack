@@ -45,17 +45,17 @@ tr {
     border: 1px solid #aeaeae;
 }
 
-tr.onloan {
+.onloan {
     background-color: $color-disabled-light;
     color: $color-disabled-dark;
     font-style: italic;
 }
 
-tr.checkedin {
+.checkedin {
     background-color: $color-c-light;
 }
 
-tr.checkedout {
+.checkedout {
     background-color: $color-d-light;
 }
 
@@ -64,7 +64,6 @@ tr.checkedout {
 // gear list area formatting
 #gear-list-container {
     border: 1px solid black;
-    width: 400px;
     padding: 5px;
     border-collapse: collapse;
 }
