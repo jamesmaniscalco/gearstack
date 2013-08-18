@@ -39,7 +39,7 @@ App.config ["$routeProvider", ($routeProvider) ->
     ).otherwise redirectTo: "/"
 ]
   
-App.config (RestangularProvider) ->
+App.config ['RestangularProvider', (RestangularProvider) ->
     RestangularProvider.setBaseUrl("/api/v1")
 
 # configure app to add X-CSRF-Token to headers to make Rails happy
@@ -50,5 +50,6 @@ App.config ["$httpProvider", ($httpProvider) ->
 ]
 
 # start up the User Status service to make sure that we get the status on load
-App.run (UserStatus) ->
+App.run ['UserStatus', (UserStatus) ->
 
+]
