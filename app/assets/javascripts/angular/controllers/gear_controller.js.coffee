@@ -317,7 +317,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     $scope.addGearList = ->
         GearLists.post($scope.newGearList).then (addedGearList) ->
             $scope.gearLists.push addedGearList
-            $scope.hideGearListForm()
+            $scope.hideAddGearListForm()
         , ->
             console.log 'error creating gear list'
 
