@@ -1,15 +1,17 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
 App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangular', 'resolvedGearItems', 'resolvedGearLists', 'resolvedUserStatus', 'GearItems', 'GearLists', 'UserStatus', ($scope, $q, $http, $timeout, Restangular, resolvedGearItems, resolvedGearLists, resolvedUserStatus, GearItems, GearLists, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
-    if resolvedGearItems.success and resolvedGearLists.success
+    if resolvedGearItems.success and resolvedGearLists.success and resolvedUserStatus.success
+        $scope.userStatus = resolvedUserStatus.data
         $scope.gearItems = resolvedGearItems.data
         $scope.gearLists = resolvedGearLists.data
     else
         console.log 'error'
-        console.log resolvedGearItems.data
+        console.log resolvedUserStatus.success
+        console.log resolvedGearItems.success
+        console.log resolvedGearLists.success
 
     # keep track of things in User Status
-    $scope.userStatus = resolvedUserStatus
     updateUserStatus = (userStatusData) ->
         $scope.userStatus = userStatusData
 

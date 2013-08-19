@@ -35,19 +35,20 @@ App.config ["$routeProvider", ($routeProvider) ->
                             }
                         )
             ]
-            resolvedUserStatus: ['UserStatus', (UserStatus) ->
-                # copy this strategy from the gear controller
-                userStatus = {}
-
-                # keep track of things in User Status
-                updateUserStatus = (userStatusData) ->
-                    userStatus = userStatusData
-
-                # register the callback with User Status to keep it updated
-                UserStatus.registerObserverCallback(updateUserStatus)
-
-                # and return the resolved data
-                return userStatus
+            resolvedUserStatus: ['UserStatus', '$timeout', (UserStatus, $timeout) ->
+                UserStatus.updateCall().then(
+                        (statusData) ->
+                            {
+                                success: true,
+                                data: statusData
+                            }
+                        ,
+                        (data) ->
+                            {
+                                success: false,
+                                data: data
+                            }
+                        )
             ]
         }
     ).otherwise redirectTo: "/"

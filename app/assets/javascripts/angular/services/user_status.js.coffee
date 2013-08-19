@@ -1,5 +1,5 @@
 # gets user status from the server
-App.factory 'UserStatus', ['$http', '$timeout', ($http, $timeout) ->
+App.factory 'UserStatus', ['$http', '$timeout', '$q', ($http, $timeout, $q) ->
     # the user status object
     this.userStatus = {}
 
@@ -22,9 +22,16 @@ App.factory 'UserStatus', ['$http', '$timeout', ($http, $timeout) ->
 
     updateErrors = 0
 
+    updateUrl = 'api/v1/status'
+
+    updateCall = () ->
+        return $http.get(updateUrl)
+
+    this.updateCall = updateCall
+
     # define our timeout function...
     updateUserStatus = () ->
-        $http.get('api/v1/status').success (statusData) ->
+        updateCall().success (statusData) ->
             # update the variable and notify the observers
             this.userStatus = statusData
             notifyObservers()
