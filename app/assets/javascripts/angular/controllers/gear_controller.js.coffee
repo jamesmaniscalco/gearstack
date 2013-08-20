@@ -135,10 +135,13 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         $scope.gearItemBeingEditedId = null
 
     $scope.cancelEditGearItem = ->
-        # check if there's actually an edit to cancel...
-        if $scope.gearItemBeingEditedId
-            $scope.gearItems = _.without $scope.gearItems, _.findWhere $scope.gearItems, {id: $scope.gearItemBeingEditedId}     # this is pretty ugly, but it works!
-            $scope.gearItems.push $scope.gearItemBeingEdited    # restore it from the copy we made
+        # # check if there's actually an edit to cancel...
+        # if $scope.gearItemBeingEditedId
+        #     $scope.gearItems = _.without $scope.gearItems, _.findWhere $scope.gearItems, {id: $scope.gearItemBeingEditedId}     # this is pretty ugly, but it works!
+        #     $scope.gearItems.push $scope.gearItemBeingEdited    # restore it from the copy we made
+
+        # Now we're just editing the copy, so we don't need to do anything other than set the copy to null (no changes were made to the model.)
+
         # then do this anyway
         $scope.resetEditGearItem()
 
@@ -228,13 +231,29 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                     alert gearItem.name + ' not deleted (server communication error)'
 
     $scope.updateGearItem = (gearItem) ->
-        # remember we have an unedited copy in $scope.gearItemBeingEdited
+        # # remember we have an unedited copy in $scope.gearItemBeingEdited
+        # gearItem.put().then (data) ->
+        #         # if successful, we can just set editing mode off
+        #         $scope.resetEditGearItem()  # this just sets things to null and keeps the changes.
+        #     , (data) ->
+        #         # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
+        #         gearItem = Restangular.copy $scope.gearItemBeingEdited
+        #         alert gearItem.name + ' not updated (server communication error)'
+        #         $scope.cancelEditGearItem() # this reverts any changes
+
+        # Now, the edited copy is in $scope.gearItemBeingEdited, while gearItem is the unchanged original
+        gearItemOriginal = Restangular.copy gearItem    # save the original...
+        gearItem = Restangular.copy $scope.gearItemBeingEdited
         gearItem.put().then (data) ->
-                # if successful, we can just set editing mode off
-                $scope.resetEditGearItem()  # this just sets things to null and keeps the changes.
+                # if successful, we remove the old gear item, add the edited one, and turn editing mode off.
+
+                # pop and push the gearItem with its replacement:
+                $scope.gearItems = _.without $scope.gearItems, _.findWhere $scope.gearItems, {id: $scope.gearItemBeingEditedId}     # remove the original...
+                $scope.gearItems.push gearItem # and replace with the edited version (the Restangular.copy above)
+                $scope.resetEditGearItem()  # finally this sets things to null and keeps the changes.
             , (data) ->
                 # if unsuccessful, set it back to the copy, alert the user, and set the copy to null
-                gearItem = Restangular.copy $scope.gearItemBeingEdited
+                gearItem = Restangular.copy $scope.gearItemOriginal
                 alert gearItem.name + ' not updated (server communication error)'
                 $scope.cancelEditGearItem() # this reverts any changes
 
@@ -349,7 +368,6 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
                     alert gearList.name + ' not deleted (server communication error)'
 
     $scope.updateGearList = (gearList) ->
-        # remember we have an unedited copy in $scope.gearItemBeingEdited
         gearList.put().then (data) ->
                 # if successful, we can just set editing mode off
                 $scope.resetEditGearList()  # this just sets things to null and keeps the changes.
