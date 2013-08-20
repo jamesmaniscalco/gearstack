@@ -6,7 +6,10 @@ module Api
 
       def status
         if user_signed_in?
-          render json: { 'current_user_id' => current_user.id }, status: :ok
+          render json: {
+              'current_user_id' => current_user.id,
+              'weight_unit' => current_user.weight_unit
+            }, status: :ok
         else
           render json: { 'current_user_id' => nil }, status: :ok
         end

@@ -9,7 +9,7 @@ class GearItem < ActiveRecord::Base
   #validations
   validates :name, :presence => true
   validates :status, :presence => true
-  validates :weight, :numericality => true, :allow_nil => true
+  validates :weight, :numericality => true, :allow_nil => true    # this is stored in grams
   validates :status, :inclusion => { :in => %w(checkedin checkedout)}
 
   #scopes

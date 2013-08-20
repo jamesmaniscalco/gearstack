@@ -41,6 +41,9 @@ gem 'jquery-rails'
 #user authentication
 gem 'devise'
 
+# setting defaults in the model level
+gem 'attribute-defaults'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
