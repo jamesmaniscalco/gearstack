@@ -10,9 +10,7 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
     this.registerObserverCallback = (callback) ->
         # add the observer
         observerCallbacks.push(callback)
-        # cancel the current timeout delay and execute the status update again immediately, so we notify any observer right away
-        $timeout.cancel this.statusTimeout
-        updateUserStatus()
+        resetStatusTimeout()
 
 
     # notify observers, called when the status changes
@@ -22,11 +20,11 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
 
     updateErrors = 0
 
-    updateUrl = 'api/v1/status'
+    updateUrl = 'status'
 
     updateCall = () ->
         # return $http.get(updateUrl)
-        return Restangular.all('status').getList()
+        return Restangular.all(updateUrl).getList()
 
     this.updateCall = updateCall
 
@@ -38,11 +36,10 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
             notifyObservers()
             startStatusTimeout()
             updateErrors = 0    # reset error counter
-        , (error, status) ->
+        , (error) ->
             # if there's an error, log it
             console.log 'error:'
             console.log error
-            console.log status
             updateErrors += 1
             if updateErrors < 5    # if it fails 5 times, quit.  This should be fixed for prod
                 startStatusTimeout()
@@ -51,7 +48,35 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
     startStatusTimeout = () ->
         this.statusTimeout = $timeout updateUserStatus, 10000
 
+    resetStatusTimeout = () ->
+        # cancel the current timeout delay and execute the status update again immediately, so we notify any observer right away
+        $timeout.cancel this.statusTimeout
+        updateUserStatus()
+
     updateUserStatus()
+
+
+
+    # also keep track of other user things, like the unit.  Here we can change it
+    this.updateWeightUnit = (weightUnit) ->
+        weight_object = {weight_unit: weightUnit} 
+        Restangular.one(updateUrl).customPUT(weight_object).then () ->
+                resetStatusTimeout()
+            , (error) ->
+                alert "error - weight unit not updated"
+                console.log error
+
+        # Restangular.one(updateUrl).get().then((data) -> console.log data)
+
+        # $http.put('api/v1/status', {weight_unit: weightUnit}).success () ->
+        #         resetStatusTimeout()
+        #     .error (error) ->
+        #         alert "error - weight unit not updated"
+        #         console.log error
+
+
+        
+
 
     return this
 ]

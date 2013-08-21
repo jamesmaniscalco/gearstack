@@ -96,3 +96,7 @@
 
     %p
       %button{"ng-click" => "refreshGearItems()"} refresh gear items
+    %p
+      weight unit: {{ userStatus.weight_unit }}
+      %button{"ng-click" => 'updateWeightUnit("pound")'} change unit to pound
+      %button{"ng-click" => 'updateWeightUnit("gram")'} change unit to gram

@@ -18,6 +18,9 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     # register the callback with User Status to keep it updated
     UserStatus.registerObserverCallback(updateUserStatus)
 
+    $scope.updateWeightUnit = (unit) ->
+        UserStatus.updateWeightUnit unit
+
 
 
     ##############

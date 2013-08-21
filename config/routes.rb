@@ -14,6 +14,7 @@ Gearstack::Application.routes.draw do
   		resources :gear_items
       resources :gear_lists
       match 'status', to: 'user_status#status', via: :get
+      match 'status', to: 'user_status#update', via: :put
   	end
   end
 
