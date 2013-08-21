@@ -1,5 +1,5 @@
 # App.controller 'GearController', ['$scope', 'Restangular', ($scope, Restangular) ->
-App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangular', 'resolvedGearItems', 'resolvedGearLists', 'resolvedUserStatus', 'GearItems', 'GearLists', 'UserStatus', ($scope, $q, $http, $timeout, Restangular, resolvedGearItems, resolvedGearLists, resolvedUserStatus, GearItems, GearLists, UserStatus) ->
+App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', '$filter', 'Restangular', 'resolvedGearItems', 'resolvedGearLists', 'resolvedUserStatus', 'GearItems', 'GearLists', 'UserStatus', ($scope, $q, $http, $timeout, $filter, Restangular, resolvedGearItems, resolvedGearLists, resolvedUserStatus, GearItems, GearLists, UserStatus) ->
     # pull in data from the resolve in the $routeProvider
     if resolvedGearItems.success and resolvedGearLists.success and resolvedUserStatus.success
         $scope.userStatus = resolvedUserStatus.data
@@ -21,6 +21,7 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
     $scope.updateWeightUnit = (unit) ->
         UserStatus.updateWeightUnit unit
 
+    $scope.weight_precision = 2
 
 
     ##############
@@ -131,6 +132,9 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         # $scope.gearItemBeingEdited = gearItem.id
         $scope.gearItemBeingEdited = Restangular.copy gearItem
         $scope.gearItemBeingEditedId = $scope.gearItemBeingEdited.id
+        # and now we will be editing the value in the preferred unit
+        $scope.gearItemBeingEdited.weight = $filter('fromGramsTo')($scope.gearItemBeingEdited.weight, $scope.userStatus.weight_unit, $scope.weight_precision)
+        # make sure the add gear form isn't hanging around
         $scope.hideAddGearForm()
 
     $scope.resetEditGearItem = ->
@@ -247,6 +251,8 @@ App.controller 'GearController', ['$scope', '$q', '$http', '$timeout', 'Restangu
         # Now, the edited copy is in $scope.gearItemBeingEdited, while gearItem is the unchanged original
         gearItemOriginal = Restangular.copy gearItem    # save the original...
         gearItem = Restangular.copy $scope.gearItemBeingEdited
+        # convert the edited weight back to grams
+        gearItem.weight = $filter('toGramsFrom')(gearItem.weight, $scope.userStatus.weight_unit, $scope.weight_precision)
         gearItem.put().then (data) ->
                 # if successful, we remove the old gear item, add the edited one, and turn editing mode off.
 

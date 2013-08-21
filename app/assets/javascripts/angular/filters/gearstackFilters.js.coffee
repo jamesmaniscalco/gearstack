@@ -42,3 +42,17 @@ gearstackFilters.filter 'fromGramsTo', () ->
         else
             return ""
 
+gearstackFilters.filter 'toGramsFrom', () ->
+    (weightInGrams, unit, precision) ->
+        if weightInGrams
+            conversion = 1
+            switch unit
+                when 'gram' then conversion = 1
+                when 'kilogram' then conversion = 1000
+                when 'pound' then conversion = 453.592
+                when 'ounce' then conversion = 28.3495
+
+            return (weightInGrams * conversion).toFixed(precision)
+        else
+            return ""
+
