@@ -41,7 +41,7 @@
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
             %input{:name => "location", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItemBeingEdited.location", :placeholder => "item location", :type => "string", :class => "input-block-level"}
           %div{:class => "span1 text-right"}
-            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight}}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight | fromGramsTo:userStatus.weight_unit:2}}
             %input{:name => "weight", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItemBeingEdited.weight", :placeholder => "item weight", :type => "text", :smart_float => "", :class => "input-block-level"}
           %div{:class => "span2"}
             %span {{gearItem.status | prettyStatus}}

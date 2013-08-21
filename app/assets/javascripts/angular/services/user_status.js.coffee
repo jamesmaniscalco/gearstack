@@ -66,17 +66,6 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
                 alert "error - weight unit not updated"
                 console.log error
 
-        # Restangular.one(updateUrl).get().then((data) -> console.log data)
-
-        # $http.put('api/v1/status', {weight_unit: weightUnit}).success () ->
-        #         resetStatusTimeout()
-        #     .error (error) ->
-        #         alert "error - weight unit not updated"
-        #         console.log error
-
-
-        
-
 
     return this
 ]

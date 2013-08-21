@@ -27,3 +27,18 @@ gearstackFilters.filter 'inGearList', () ->
             return return_array
         else
             return gearItems
+
+gearstackFilters.filter 'fromGramsTo', () ->
+    (weightInGrams, unit, precision) ->
+        if weightInGrams
+            conversion = 1
+            switch unit
+                when 'gram' then conversion = 1
+                when 'kilogram' then conversion = 0.001
+                when 'pound' then conversion = 0.00220462
+                when 'ounce' then conversion = 0.035274
+
+            return (weightInGrams * conversion).toFixed(precision)
+        else
+            return ""
+
