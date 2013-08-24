@@ -19,7 +19,7 @@ App.config ["$routeProvider", ($routeProvider) ->
                                 data: error
                             }
                         )
-            ]
+                ]
             resolvedGearLists: ['GearLists', (GearLists) ->
                 GearLists.getList().then(
                         (gearLists) ->
@@ -34,8 +34,8 @@ App.config ["$routeProvider", ($routeProvider) ->
                                 data: error
                             }
                         )
-            ]
-            resolvedUserStatus: ['UserStatus', '$timeout', (UserStatus, $timeout) ->
+                ]
+            resolvedUserStatus: ['UserStatus', (UserStatus) ->
                 UserStatus.updateCall().then(
                         (statusData) ->
                             {
@@ -49,8 +49,29 @@ App.config ["$routeProvider", ($routeProvider) ->
                                 data: data
                             }
                         )
-            ]
+                ]
+            }
+    ).when("/settings",
+        templateUrl: "/assets/angular/templates/user_settings.html"
+        controller: "UserSettingsController"
+        resolve: {
+            resolvedUserStatus: ['UserStatus', (UserStatus) ->
+                UserStatus.updateCall().then(
+                        (statusData) ->
+                            {
+                                success: true,
+                                data: statusData
+                            }
+                        ,
+                        (data) ->
+                            {
+                                success: false,
+                                data: data
+                            }
+                        )
+                ]
         }
+
     ).otherwise redirectTo: "/"
 ]
   

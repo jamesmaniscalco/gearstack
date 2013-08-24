@@ -9,7 +9,12 @@
 </head>
 <body>
     <header>
-        <a href='#/'>Gearstack</a>
+        <% if user_signed_in? %>
+            <a href='#/'>Gearstack</a> |
+            <a href='#/settings'>Settings</a>
+        <% else %>
+            <a href='#/'>Gearstack</a>
+        <% end %>
     </header>
 
 

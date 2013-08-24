@@ -41,7 +41,7 @@
             %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.location}}
             %input{:name => "location", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItemBeingEdited.location", :placeholder => "item location", :type => "string", :class => "input-block-level"}
           %div{:class => "span1 text-right"}
-            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight | fromGramsTo:userStatus.weight_unit:weight_precision}}
+            %span{"ng-hide" => 'editingThisGearItem(gearItem)'} {{gearItem.weight | fromGramsTo:userStatus.weight_unit:userStatus.weight_precision}}
             %input{:name => "weight", "ng-show" => 'editingThisGearItem(gearItem)', "ng-model" => "gearItemBeingEdited.weight", :placeholder => "item weight", :type => "text", :smart_float => "", :class => "input-block-level"}
           %div{:class => "span2"}
             %span {{gearItem.status | prettyStatus}}
@@ -98,5 +98,6 @@
       %button{"ng-click" => "refreshGearItems()"} refresh gear items
     %p
       weight unit: {{ userStatus.weight_unit }}
+      weight precision: {{ userStatus.weight_precision }}
       %button{"ng-click" => 'updateWeightUnit("pound")'} change unit to pound
       %button{"ng-click" => 'updateWeightUnit("gram")'} change unit to gram

@@ -1,0 +1,10 @@
+%div
+  %h2 User Settings
+  %div 
+    %span Unit of weight:
+    %select{"ng-model" => "selectedWeightUnit", "ng-options" => "u.unit for u in weightUnitOptions"}
+  %div
+    %span Weight precision (decimal places after 0):
+    %select{"ng-model" => "selectedWeightPrecision", "ng-options" => "p.precision for p in weightPrecisionOptions"}
+  %div
+    %button{"ng-click" => "saveUserSettings()"} Save settings

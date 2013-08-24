@@ -7,11 +7,12 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :weight_unit
+  attr_accessible :weight_unit, :weight_precision
   # attr_accessible :title, :body
 
   # defaults
   attr_default :weight_unit, 'gram'   # looks like even if the database entry is null, it returns the default.  cool!
+  attr_default :weight_precision, 2
 
   # validations
   validates :weight_unit, :inclusion => { :in => %w(gram kilogram ounce pound)}

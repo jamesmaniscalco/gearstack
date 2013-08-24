@@ -59,11 +59,19 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
 
     # also keep track of other user things, like the unit.  Here we can change it
     this.updateWeightUnit = (weightUnit) ->
-        weight_object = {weight_unit: weightUnit} 
+        weight_object = {weight_unit: weightUnit}
         Restangular.one(updateUrl).customPUT(weight_object).then () ->
                 resetStatusTimeout()
             , (error) ->
                 alert "error - weight unit not updated"
+                console.log error
+
+    this.updateWeightPrecision = (weightPrecision) ->
+        weight_object = {weight_precision: weightPrecision} 
+        Restangular.one(updateUrl).customPUT(weight_object).then () ->
+                resetStatusTimeout()
+            , (error) ->
+                alert "error - weight precision not updated"
                 console.log error
 
 
