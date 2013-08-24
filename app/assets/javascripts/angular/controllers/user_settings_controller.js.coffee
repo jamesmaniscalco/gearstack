@@ -1,4 +1,4 @@
-App.controller 'UserSettingsController', ['$scope', 'UserStatus', 'resolvedUserStatus', ($scope, UserStatus, resolvedUserStatus) ->
+App.controller 'UserSettingsController', ['$scope', '$q', 'UserStatus', 'resolvedUserStatus', ($scope, $q, UserStatus, resolvedUserStatus) ->
     # get the user status from the resolved data
     if resolvedUserStatus.success
         $scope.userStatus = resolvedUserStatus.data
@@ -18,6 +18,7 @@ App.controller 'UserSettingsController', ['$scope', 'UserStatus', 'resolvedUserS
         UserStatus.updateWeightPrecision $scope.selectedWeightPrecision.precision
 
 
+
     $scope.weightUnitOptions = [
         {unit: 'gram'},
         {unit: 'kilogram'},
@@ -32,6 +33,9 @@ App.controller 'UserSettingsController', ['$scope', 'UserStatus', 'resolvedUserS
         {precision: 3}
     ]
 
-    $scope.selectedWeightUnit = _.findWhere $scope.weightUnitOptions, {unit: $scope.userStatus.weight_unit}
-    $scope.selectedWeightPrecision = _.findWhere $scope.weightPrecisionOptions, {precision: $scope.userStatus.weight_precision}
+    resetSettings = () ->
+        $scope.selectedWeightUnit = _.findWhere $scope.weightUnitOptions, {unit: $scope.userStatus.weight_unit}
+        $scope.selectedWeightPrecision = _.findWhere $scope.weightPrecisionOptions, {precision: $scope.userStatus.weight_precision}
+
+    resetSettings()
 ]

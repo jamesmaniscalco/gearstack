@@ -63,7 +63,6 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
         Restangular.one(updateUrl).customPUT(weight_object).then () ->
                 resetStatusTimeout()
             , (error) ->
-                alert "error - weight unit not updated"
                 console.log error
 
     this.updateWeightPrecision = (weightPrecision) ->
@@ -71,7 +70,6 @@ App.factory 'UserStatus', ['$http', '$timeout', 'Restangular', ($http, $timeout,
         Restangular.one(updateUrl).customPUT(weight_object).then () ->
                 resetStatusTimeout()
             , (error) ->
-                alert "error - weight precision not updated"
                 console.log error
 
 
