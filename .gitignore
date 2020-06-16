@@ -18,3 +18,4 @@ pickle-email-*.html
 *.swp
 *.swo
 *.DS_Store
+/vendor/bundle
