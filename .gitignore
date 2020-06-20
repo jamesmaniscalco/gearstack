@@ -1,2 +1,22 @@
+# vim
+**/*.swp
+
+# OSX
 .DS_Store
+
+# personal notes
+dev_diary.txt
+
+# python venv
+.venv/
+
+# python
+**/*.pyc
+__pycache__/
+
+# database
+db.sqlite3
+
+# django
+static/
 
