@@ -20,3 +20,6 @@ db.sqlite3
 # django
 static/
 
+# sublime text
+**/*.sublime-workspace
+**/*.sublime-project

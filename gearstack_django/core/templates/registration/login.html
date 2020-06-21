@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<h2>Log in</h2>
+
+{% if form.errors %}
+<p>The username and password do not match our records. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account does not have access to this page. To proceed, please log in with an account that has access.</p>
+    {% else %}
+    <p>Please log in to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+{% for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+                <br>
+                <small style="color: gray">{{ field.help_text }}</small>
+            {% endif %}    
+            {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </p>
+    {% endfor %}
+    <button type="submit">Log in</button>
+</form>
+
+<p><a href="{% url 'password_reset' %}">Reset password</a></p>
+
+<p>New here? <a href="{% url 'signup' %}">Sign up</a></p>
+
+{% endblock content %}
