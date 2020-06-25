@@ -20,49 +20,11 @@ def home(request):
 
 
 def signup(request):
-    _already_logged_in_redirect(request)
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Account created successfully.')
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login_builtin(request, user)
-            return redirect('home')
-    else:
-        form = SignupForm()
-    return render(request, 'registration/signup.html', {'form':form})
+    return _signup_or_login(request, 'signup')
 
 
 def login(request):
-    _already_logged_in_redirect(request)
-    # if POST, process user input.
-    if request.method == 'POST':
-        form = AuthenticationWithRedirectForm(data=request.POST)
-        # if the form is valid, process it. Else nothing - continue to final return statement.
-        if form.is_valid():
-            messages.success(request, 'Logged in successfully.')
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=raw_password)
-            login_builtin(request, user)
-            # process the redirect
-            next = form.cleaned_data.get('next')
-            if next and _is_safe_redirect_url(next):
-                # don't use the redirect shortcut because we don't want to allow hijacking the path name reverse method.
-                return HttpResponseRedirect(next)
-            else:
-                return redirect('home')
-    # if GET, make sure to maintain redirect.
-    else:
-        if not request.GET or not request.GET['next'] or not _is_safe_redirect_url(request.GET['next']):
-            form = AuthenticationWithRedirectForm()
-        else:
-            form = AuthenticationWithRedirectForm(initial={'next':request.GET['next']})
-    # if GET or failed authentication, render the login page.
-    return render(request, 'registration/login.html', {'form':form})
+    return _signup_or_login(request, 'login')
 
 
 def logout(request):
@@ -72,11 +34,72 @@ def logout(request):
 
 
 # internal helpers
+def _is_safe_redirect_url(url):
+    return url_has_allowed_host_and_scheme(url, allowed_hosts=SITE_URL)
+
 def _already_logged_in_redirect(request):
     if request.user.is_authenticated:
         messages.warning(request, 'Already logged in.')
+        if request.GET and request.GET.get('next'):
+            return HttpResponseRedirect(request.GET.get('next'))
+        elif request.POST and request.POST.get('next'):
+            return HttpResponseRedirect(request.POST.get('next'))
+        else:
+            return redirect('home')
+    else:
+        return None
+
+def _signup_or_login(request, signup_or_login):
+    if signup_or_login == 'signup':
+        form_class = SignupForm
+        password_field = 'password1'
+        save_form = True
+        template = 'registration/signup.html'
+    elif signup_or_login == 'login':
+        form_class = AuthenticationWithRedirectForm
+        password_field = 'password'
+        save_form = False
+        template = 'registration/login.html'
+    else:
+        raise Exception('Unrecoginzed option. Use "signup" or "login".')
+
+    logged_in_redirect = _already_logged_in_redirect(request)
+    if logged_in_redirect:
+        return logged_in_redirect
+    # if POST, process user input.
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        # if the form is valid, process it. Else nothing - continue to final return statement.
+        if form.is_valid():
+            if save_form: # this only runs if we are doing a signup.
+                form.save()
+            # handle the login and redirect (next param if present, else 'home')
+            return _login_user_and_redirect(request, form, password_field)
+    # if GET, make sure to maintain redirect.
+    else:
+        form = _prepare_form_and_preserve_redirect(request, form_class)
+    # if GET or failed authentication, render the login page.
+    return render(request, template, {'form':form})
+    
+
+def _login_user_and_redirect(request, form, password_field):
+    messages.success(request, 'Logged in successfully.')
+    username = form.cleaned_data.get('username')
+    raw_password = form.cleaned_data.get(password_field)
+    user = authenticate(username=username, password=raw_password)
+    login_builtin(request, user)
+    # process the redirect
+    next = form.cleaned_data.get('next')
+    if next and _is_safe_redirect_url(next):
+        # don't use the redirect shortcut because we don't want to allow hijacking the path name reverse method.
+        return HttpResponseRedirect(next)
+    else:
         return redirect('home')
 
-def _is_safe_redirect_url(url):
-    return url_has_allowed_host_and_scheme(url, allowed_hosts=SITE_URL)
+def _prepare_form_and_preserve_redirect(request, form_class):
+    if not request.GET or not request.GET['next'] or not _is_safe_redirect_url(request.GET['next']):
+        form = form_class()
+    else:
+        form = form_class(initial={'next':request.GET['next']})
+    return form
 

@@ -8,7 +8,7 @@
 <p>The username and password do not match our records. Please try again.</p>
 {% endif %}
 
-{% if next %}
+{% if form.next.value %}
     {% if user.is_authenticated %}
     <p>Your account does not have access to this page. To proceed, please log in with an account that has access.</p>
     {% else %}
@@ -16,7 +16,7 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'login' %}">
+<form method="post">
 {% csrf_token %}
 {% for field in form.hidden_fields %}
     {{ field }}
@@ -39,6 +39,10 @@
 
 <p><a href="{% url 'password_reset' %}">Reset password</a></p>
 
-<p>New here? <a href="{% url 'signup' %}">Sign up</a></p>
+
+<p>New here?
+    {% if form.next.value %}<a href="{% url 'signup' %}?next={{ form.next.value }}">
+    {% else %}<a href="{% url 'signup' %}">
+    {% endif %}Sign up</a></p>
 
 {% endblock content %}
