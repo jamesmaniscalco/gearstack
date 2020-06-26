@@ -75,6 +75,7 @@ def _signup_or_login(request, signup_or_login):
                 form.save()
             # handle the login and redirect (next param if present, else 'home')
             return _login_user_and_redirect(request, form, password_field)
+        print(form)
     # if GET, make sure to maintain redirect.
     else:
         form = _prepare_form_and_preserve_redirect(request, form_class)

@@ -16,7 +16,7 @@ class TruncatingCharField(forms.CharField):
 # custom signup form to include email address.
 # see https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
 class SignupForm(UserCreationForm):
-    next = TruncatingCharField(max_length=254, widget=forms.HiddenInput())
+    next = TruncatingCharField(max_length=254, widget=forms.HiddenInput(), required=False)
     email = forms.EmailField(max_length=254, help_text='A valid email address is required.')
 
     class Meta:
@@ -27,6 +27,6 @@ class SignupForm(UserCreationForm):
 # handle user login with optional redirect
 class AuthenticationWithRedirectForm(AuthenticationForm):
     # redirect URL
-    next = TruncatingCharField(max_length=254, widget=forms.HiddenInput())
+    next = TruncatingCharField(max_length=254, widget=forms.HiddenInput(), required=False)
     
 
