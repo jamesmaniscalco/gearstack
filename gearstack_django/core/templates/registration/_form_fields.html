@@ -1,0 +1,16 @@
+{% for field in form.hidden_fields %}
+    {{ field }}
+{% endfor %}
+{% for field in form.visible_fields %}
+    <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+            <br>
+            <small style="color: gray">{{ field.help_text }}</small>
+        {% endif %}    
+        {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    </p>
+{% endfor %}

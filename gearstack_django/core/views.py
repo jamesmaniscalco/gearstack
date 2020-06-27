@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as login_builtin, authenticate, logout as logout_builtin
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login as login_builtin, authenticate, logout as logout_builtin, update_session_auth_hash
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponseRedirect
+from django.contrib.auth.tokens import default_token_generator
 
-from core.forms import SignupForm, AuthenticationWithRedirectForm
+from core.forms import SignupForm, AuthenticationWithRedirectForm, PasswordResetRequestForm
 from config.settings import SITE_URL
 
 
@@ -31,6 +33,83 @@ def logout(request):
    logout_builtin(request)
    messages.success(request, 'Logged out successfully.')
    return redirect('index')
+
+
+@login_required
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user,data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Password changed successfully.')
+            update_session_auth_hash(request, form.user)
+            return redirect('home')
+    else:  # if the request was GET, prepare the form here
+        form = PasswordChangeForm(request.user)
+    # if GET or failed POST, serve the form.
+    return render(request, 'registration/password_change.html', {'form':form})
+
+
+def password_reset_request(request):
+    # process and/or serve password reset request form
+    if request.method == 'POST':
+        form = PasswordResetRequestForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'registration/password_reset_request_done.html')
+    else:
+        form = PasswordResetRequestForm()
+    # if GET or failed POST, serve the form.
+    return render(request, 'registration/password_reset_request.html', {'form':form})
+
+
+def password_reset(request, *args, **kwargs):
+    # process and/or serve the password reset form
+    # if any error is raised, it's because the link used was invalid in some way.
+    validlink = False
+    reset_url_token = 'reset_password'
+    internal_reset_session_token = '_password_reset_token'
+    token_generator=default_token_generator
+    try:
+        # check that expected parameters have been passed in
+        assert 'uidb64' in kwargs and 'token' in kwargs
+        # urlsafe_base64_decode() decodes to bytestring
+        uid = urlsafe_base64_decode(kwargs.get('uidb64')).decode()
+        user = User.objects.get(pk=uid)
+
+        # if the user id matches a user in the database, verify the token
+        if user is not None:
+            token = kwargs.get('token')
+            if token == reset_url_token:
+                session_token = request.session.get(internal_reset_session_token)
+                if token_generator.check_token(user, session_token):
+                    # If the token is valid, display the password reset form (continue with view logic)
+                    validlink = True
+            else:
+                if token_generator.check_token(user, token):
+                    # Store the token in the session and redirect to the
+                    # password reset form at a URL without the token. That
+                    # avoids the possibility of leaking the token in the
+                    # HTTP Referer header.
+                    request.session[internal_reset_session_token] = token
+                    redirect_url = request.path.replace(token, reset_url_token)
+                    return HttpResponseRedirect(redirect_url)
+
+        if request.method == 'POST':
+            form = SetPasswordForm(user=user, data=request.POST)
+            if form.is_valid():
+                user = form.save()
+                del request.session[internal_reset_session_token]
+                messages.success(request, 'Password changed successfully.')
+                return redirect('login')
+        else:
+            form = SetPasswordForm(user=user)
+
+    except:
+        validlink = False
+        form = None
+
+    return render(request, 'registration/password_reset.html', {'form':form, 'validlink':validlink})
 
 
 # internal helpers

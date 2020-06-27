@@ -15,7 +15,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_URL = "http://127.0.0.1:8000"
+SITE_DOMAIN = "127.0.0.1:8000"
+SITE_URL = "http://" + SITE_DOMAIN
+SITE_NAME = "Gearstack"
 
 # Application definition
 
@@ -104,6 +106,14 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'    # for development - print emails to console
+
+
+# password reset - this will change in future Django versions!
+PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 
 # Static files (CSS, JavaScript, Images)

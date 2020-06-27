@@ -11,12 +11,7 @@ urlpatterns = [
     path('account/login/', core_views.login, name='login'),
     path('account/logout/', core_views.logout, name='logout'),
     path('account/signup/', core_views.signup, name='signup'),
-    # manually spell out builtin auth urls (since we defined custom login/out
-    path('account/password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
-    path('account/password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
-    path('account/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('account/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('account/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('account/reset/done/', auth_views.PasswordResetCompleteView, name='password_reset_complete'),
-    #path('account/', include('django.contrib.auth.urls')),
+    path('account/password_change/', core_views.password_change, name='password_change'),
+    path('account/password_reset_request/', core_views.password_reset_request, name='password_reset_request'),
+    path('account/password_reset/<uidb64>/<token>/', core_views.password_reset, name='password_reset'),
 ]
