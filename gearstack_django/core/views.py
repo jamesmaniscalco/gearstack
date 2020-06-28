@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils.http import url_has_allowed_host_and_scheme, urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponseRedirect
 from django.contrib.auth.tokens import default_token_generator
+from django.views.decorators.http import require_POST
 
 from core.forms import SignupForm, AuthenticationWithRedirectForm, PasswordResetRequestForm
 from config.settings import SITE_URL
@@ -29,10 +30,13 @@ def login(request):
     return _signup_or_login(request, 'login')
 
 
+@require_POST
 def logout(request):
-   logout_builtin(request)
-   messages.success(request, 'Logged out successfully.')
-   return redirect('index')
+    # protect against CSRF attacks, as recommended by https://www.squarefree.com/securitytips/web-developers.html#CSRF
+    logout_builtin(request)
+    messages.success(request, 'Logged out successfully.')
+    return redirect('index')
+
 
 
 @login_required

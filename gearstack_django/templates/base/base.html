@@ -7,9 +7,9 @@
     <body>
         <h1><a href="{% url 'index' %}">Gearstack</a></h1>
         {% if user.is_authenticated %}
-            <p><a href="{% url 'home' %}">home</a> | <a href="{% url 'logout' %}">log out</a> | <a href="{% url 'password_change' %}">change password</a></p>
+            <span><a href="{% url 'home' %}">home</a> | {% include "registration/_logout_form.html" %} | <a href="{% url 'password_change' %}">change password</a></span>
         {% else %}
-            <p><a href="{% url 'login' %}">log in</a> | <a href="{% url 'signup' %}">sign up</a></p>
+            <span><a href="{% url 'login' %}">log in</a> | <a href="{% url 'signup' %}">sign up</a></span>
         {% endif %}
         {% if messages %}
         <ul class="messages">
