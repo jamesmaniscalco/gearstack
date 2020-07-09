@@ -63,6 +63,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 LOGIN_URL = '/account/login/'
 
+AUTH_USER_MODEL = 'core.User'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

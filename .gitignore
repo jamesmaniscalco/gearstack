@@ -23,3 +23,8 @@ static/
 # sublime text
 **/*.sublime-workspace
 **/*.sublime-project
+
+# test coverage reports
+.coverage
+.coverage.*
+htmlcov/

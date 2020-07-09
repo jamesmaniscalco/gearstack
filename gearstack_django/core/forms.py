@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.template import loader
 from django.utils.encoding import force_bytes
@@ -27,7 +28,7 @@ class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='A valid email address is required.')
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('username', 'email', 'password1', 'password2', )
 
 
@@ -49,17 +50,18 @@ class PasswordResetRequestForm(forms.Form):
         body = loader.render_to_string(email_template_name, context)
 
         email_message = EmailMultiAlternatives(subject, body, from_email, [to_email])
-        if html_email_template_name is not None:
-            html_email = loader.render_to_string(html_email_template_name, context)
-            email_message.attach_alternative(html_email, 'text/html')
+        # # Don't need these right now...
+        # if html_email_template_name is not None:
+        #     html_email = loader.render_to_string(html_email_template_name, context)
+        #     email_message.attach_alternative(html_email, 'text/html')
 
         email_message.send()
 
     # given the username passed to the form, return the corresponding user, or None if invalid.
     def get_user(self):
         try:
-            user = User.objects.get(username=self.cleaned_data.get('username'))
-        except User.DoesNotExist:
+            user = get_user_model().objects.get(username=self.cleaned_data.get('username'))
+        except get_user_model().DoesNotExist:
             user = None
         return user
 
