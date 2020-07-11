@@ -239,6 +239,24 @@ class TestLogin:
         response = client.get(urls.reverse('login') + '?next=/redirect_url/')
         assert b'name="next" value="/redirect_url/"' in response.content
 
+    @pytest.mark.django_db
+    def test_signup_maintains_next_parameter_on_fail(self, client, user_authenticated):
+        """
+        Verify that the 'next' redirect parameter is maintained when login fails.
+        """
+        client.logout()
+        test_password = 'my_test_password'
+        user_authenticated.set_password(test_password)
+        user_authenticated.save()
+        redirect_url = '/redirect_url/'
+        form_data = {
+            'username':user_authenticated.username,
+            'password':test_password + '_typo',
+            'next':redirect_url,
+        }
+        response = client.post(urls.reverse('login'), form_data)
+        assert b'name="next" value="%s"' % str.encode(redirect_url) in response.content
+
 ### LOGOUT
 class TestLogout:
     @pytest.mark.django_db
