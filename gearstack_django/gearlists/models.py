@@ -46,7 +46,7 @@ class GearItemManager(models.Manager):
 # Gear item
 class GearItem(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=127)
+    name = models.CharField(verbose_name='item name', max_length=127)
     notes = models.TextField(max_length=1000, blank=True)
     created_datetime = models.DateTimeField(auto_now_add=True)
     modified_datetime = models.DateTimeField(auto_now=True)
@@ -85,6 +85,9 @@ class GearListMembership(models.Model):
     modified_datetime = models.DateTimeField(auto_now=True)
     sort_index = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.gear_list.name + ' - ' + self.gear_item.name
+
     class Meta:
         constraints = [         # prevent ambiguous sorting
             models.UniqueConstraint(fields=['gear_list', 'sort_index'], name='unique_sort_index'),
@@ -95,9 +98,9 @@ class GearListMembership(models.Model):
 class GearUserProfile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     WEIGHT_UNIT_CHOICES = [(k,v) for k,v in WEIGHT_UNIT_NAMES.items()]
-    weight_unit = models.CharField(max_length=2, choices=WEIGHT_UNIT_CHOICES, default=GRAMS)
+    weight_unit = models.CharField(verbose_name='preferred weight unit', max_length=2, choices=WEIGHT_UNIT_CHOICES, default=GRAMS)
     TIME_ZONE_CHOICES = tuple(zip(pytz.common_timezones, pytz.common_timezones))
-    time_zone = models.CharField(max_length=32, choices=TIME_ZONE_CHOICES, default='UTC')
+    time_zone = models.CharField(verbose_name='preferred time zone', max_length=32, choices=TIME_ZONE_CHOICES, default='UTC')
 
     def __str__(self):
         return self.user.username + '\'s gear user profile'
