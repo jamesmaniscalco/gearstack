@@ -22,7 +22,7 @@ SITE_NAME = "Gearstack"
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'config.apps.GearstackAdminConfig', #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
