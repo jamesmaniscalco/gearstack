@@ -8,7 +8,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 
-from config.settings import SITE_DOMAIN, SITE_NAME
+from django.conf import settings
 
 
 # custom field that truncates the string to the set max length.
@@ -77,8 +77,8 @@ class PasswordResetRequestForm(forms.Form):
         if user:
             context = {
                 'email': user.email,
-                'domain': SITE_DOMAIN,
-                'site_name': SITE_NAME,
+                'domain': settings.SITE_DOMAIN,
+                'site_name': settings.SITE_NAME,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'user': user,
                 'token': token_generator.make_token(user),

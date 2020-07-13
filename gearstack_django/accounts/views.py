@@ -9,8 +9,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.tokens import default_token_generator
 from django.views.decorators.http import require_POST
 
-from core.forms import SignupForm, AuthenticationWithRedirectForm, PasswordResetRequestForm
-from config.settings import SITE_DOMAIN
+from .forms import SignupForm, AuthenticationWithRedirectForm, PasswordResetRequestForm
+from django.conf import settings
 
 
 def index(request):
@@ -112,7 +112,7 @@ def password_reset(request, *args, **kwargs):
 
 # internal helpers
 def _is_safe_redirect_url(url):
-    return url_has_allowed_host_and_scheme(url, allowed_hosts=SITE_DOMAIN)
+    return url_has_allowed_host_and_scheme(url, allowed_hosts=settings.SITE_DOMAIN)
 
 def _already_logged_in_redirect(request):
     if request.user.is_authenticated:

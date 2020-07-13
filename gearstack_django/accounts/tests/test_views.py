@@ -4,9 +4,9 @@ from django.contrib import auth
 from django.core import mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.conf import settings
 
-from config import settings
-from core import views
+from accounts import views
 
 import pytest
 
