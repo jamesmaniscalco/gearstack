@@ -13,13 +13,10 @@ from .forms import SignupForm, AuthenticationWithRedirectForm, PasswordResetRequ
 from django.conf import settings
 
 
-def index(request):
-    return render(request, 'index.html')
-
 
 @login_required
 def home(request):
-    return render(request, 'core/home.html')
+    return render(request, 'accounts/home.html')
 
 
 def signup(request):
