@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block page_header %}
+My gear
+{% endblock page_header %}
+
+{% block content %}
+<section id="gs-gear-items-list">
+{% for item in gear_items %}
+    <section class="card my-1">
+        <button id="gs-gear-item-header-{{ forloop.counter }}" class="card-header align-items-end btn btn-link btn-block text-left" role="button" data-toggle="collapse" data-target="#gs-gear-item-detail-{{ forloop.counter }}" aria-expanded="false" aria-controls="gs-gear-item-detail-{{ forloop.counter }}">
+            <strong class="gs-gear-item-name">{{ item.name }}</strong>
+            {% if item.checked_out %}
+            <small class="text-muted float-right gs-gear-item-checked-out">CHECKED OUT</small>
+            {% endif %}
+        </button>
+        <section id="gs-gear-item-detail-{{ forloop.counter }}" class="collapse" aria-labelledby="gs-gear-item-header-{{ forloop.counter }}">
+            <div class="card-body">
+                <p>{{ item.notes }}</p>
+                <div class="btn-group" role="group" aria-label"gear item controls">
+                    <button class="btn btn-sm btn-primary">check out</button>
+                    <button class="btn btn-sm btn-secondary">add to stack</button>
+                    <button class="btn btn-sm btn-info">edit</button>
+                    <button class="btn btn-sm btn-danger">delete</button>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endfor %}
+</section>
+
+{{ gear_items|json_script:"gear_items" }}
+<script type="text/javascript">
+    const gear_items = JSON.parse(document.getElementById('gear_items').textContent);
+</script>
+{% endblock content %}

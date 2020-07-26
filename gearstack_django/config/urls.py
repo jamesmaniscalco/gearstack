@@ -10,4 +10,5 @@ urlpatterns = [
     path('', marketing_views.index, name='index'),
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
+    path('gear/', include('gearlists.urls')),
 ]

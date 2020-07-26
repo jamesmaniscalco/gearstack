@@ -3,6 +3,7 @@ from django.db.models import F
 from django.conf import settings
 
 import pytz
+import uuid
 
 
 # weight unit constants (should these live somewhere else?)
@@ -45,6 +46,7 @@ class GearItemManager(models.Manager):
 
 # Gear item
 class GearItem(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(verbose_name='item name', max_length=127)
     notes = models.TextField(max_length=1000, blank=True)
@@ -62,6 +64,7 @@ class GearItem(models.Model):
 
 # Gear list
 class GearList(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=127)
     notes = models.TextField(max_length=1000, blank=True)

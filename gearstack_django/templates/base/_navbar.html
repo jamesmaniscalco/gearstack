@@ -1,0 +1,17 @@
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#gs-site-navigation" aria-controls="gs-site-navigation" aria-expanded="false" aria-label="Toggle site navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="gs-site-navigation">
+    <ul class="navbar-nav ml-auto">
+    {% if user.is_authenticated %}
+        <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'home' %}">home</a></li>
+        <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'all_gear' %}">my gear</a></li>
+        <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'password_change' %}">change password</a></li>
+        <li class="nav-item ml-auto">{% include "registration/_logout_form.html" %}</li>
+    {% else %}
+        <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'login' %}">log in</a></li>
+        <li class="nav-item ml-auto"><a class="nav-link" href="{% url 'signup' %}">sign up</a></li>
+    {% endif %}
+    </ul>
+</div>

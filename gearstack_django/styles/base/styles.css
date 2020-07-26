@@ -1,0 +1,11 @@
+.gs-gear-item-name {
+    color: #212529;
+}
+.gs-gear-item-name:hover, .gs-gear-item-name:focus {
+    color: #323640;
+}
+
+.gs-gear-item-checked-out {
+    padding-top: 0.2rem;
+    font-size: 80%;
+}

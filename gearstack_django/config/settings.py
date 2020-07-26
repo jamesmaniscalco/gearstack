@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'marketing',
     'accounts',
     'gearlists',
@@ -125,5 +126,7 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "scripts"),
+    os.path.join(BASE_DIR, "styles"),
 ]
 

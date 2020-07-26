@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block page_header %}
+Log in
+{% endblock page_header %}
+
+
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">The username and password do not match our records. Please try again.</div>
+{% endif %}
+
+{% if form.next.value %}
+    {% if user.is_authenticated %}
+    <div class="alert alert-danger" role="alert">Your account does not have access to this page. To proceed, please log in with an account that has access.</div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">Please log in to see this page.</div>
+    {% endif %}
+{% endif %}
+
+<form method="post">
+{% csrf_token %}
+{% include "registration/_form_fields.html" %}
+<button type="submit" class="btn btn-primary">Log in</button>
+</form>
+
+<p><a href="{% url 'password_reset_request' %}">Reset password</a></p>
+
+
+<p>New here?
+    {% if form.next.value %}<a href="{% url 'signup' %}?next={{ form.next.value }}">
+    {% else %}<a href="{% url 'signup' %}">
+    {% endif %}Sign up</a></p>
+
+{% endblock content %}
