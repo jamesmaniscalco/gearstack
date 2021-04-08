@@ -3,7 +3,7 @@ asgiref==3.2.10
 attrs==19.3.0
 beautifulsoup4==4.9.1
 coverage==5.2
-Django==3.0.7
+Django==3.0.14
 django-dynamic-fixture==3.1.0
 execnet==1.7.1
 more-itertools==8.4.0
